@@ -7,7 +7,70 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+	<Page.Resources>
+		<Style x:Key="Title" TargetType="TextBlock">
+			<Setter Property="FontSize" Value="40"/>
+			<Setter Property="HorizontalAlignment" Value="Center" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="Margin" Value="30" />
+		</Style>
+		<Style x:Key="Bsplit" TargetType="Button">
+			<Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+			<Setter Property="Width" Value="50" />
+			<Setter Property="Height" Value="50"/>
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Content" Value="&#xE10F;" />
+		</Style>
+		<Style x:Key="Tsplit" TargetType="TextBlock">
+			<Setter Property="FontSize" Value="18"/>
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
+	</Page.Resources>
+	
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+		<SplitView x:Name="appSplit" DisplayMode="CompactOverlay" IsPaneOpen="false" CompactPaneLength="50" OpenPaneLength="150">
+			<SplitView.Pane>
+				<Grid Background="LightGray">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					
+					<StackPanel Grid.Row="0">
+						<Button x:Name="HamburgerButton" Style="{StaticResource Bsplit}" Content="&#xE700;" Click="HamburgerButton_Click"/>
+						<StackPanel Orientation="Horizontal">
+							<Button x:Name="Home" Style="{StaticResource Bsplit}" Content="&#xE10F;" />
+							<TextBlock Text="Home" Style="{StaticResource Tsplit}" />
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<Button x:Name="Battery" Style="{StaticResource Bsplit}" Content="&#xE856;" />
+							<TextBlock Text="Battery" Style="{StaticResource Tsplit}" />
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<Button x:Name="Video" Style="{StaticResource Bsplit}" Content="&#xE20A;" />
+							<TextBlock Text="Video" Style="{StaticResource Tsplit}" />
+						</StackPanel>
+					</StackPanel>
 
+					<StackPanel Grid.Row="1">
+						<StackPanel Orientation="Horizontal">
+							<Button x:Name="SettingButton" Style="{StaticResource Bsplit}" Content="&#xE713;"/>
+							<TextBlock Style="{StaticResource Tsplit}" Text="Settings" />
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<Button x:Name="AboutButton" Style="{StaticResource Bsplit}" Content="&#xE10C;"/>
+							<TextBlock Style="{StaticResource Tsplit}" Text="About" />
+						</StackPanel>
+					</StackPanel>
+				</Grid>
+			</SplitView.Pane>
+			<SplitView.Content>
+				<Grid>
+					<StackPanel>
+						<TextBlock Text="SJCAM" Style="{StaticResource Title}"/>
+					</StackPanel>
+				</Grid>
+			</SplitView.Content>
+		</SplitView>
     </Grid>
 </Page>

@@ -39,11 +39,46 @@ namespace SJCAM
 		public string Title { get; set; }
 		public string Description { get; set; }
 
+		private CompositionEffectBrush _brush;
+		private Compositor _compositor;
+
 		public MainPage()
         {
-            this.InitializeComponent();
+			Init();
+			this.InitializeComponent();
 			Title = "SJCAM";	
-			Description = "Welcome!";	
+			Description = "Welcome!";
+			_compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+		}
+
+		private async void Init()
+		{
+			Dominant = await Images.GetDominant();
+			splitGrid.Background = new SolidColorBrush(Dominant);
+			var view = ApplicationView.GetForCurrentView();
+			view.TitleBar.BackgroundColor = Dominant;
+			view.TitleBar.ButtonBackgroundColor = Dominant;
+		}
+
+		private void Blur()
+		{
+			var graphicsEffect = new GaussianBlurEffect()
+			{
+				Name = "Blur",
+				Source = new CompositionEffectSourceParameter("Backdrop"),
+				BlurAmount = 50,
+				BorderMode = EffectBorderMode.Hard,
+
+			};
+			var blurEffectFactory = _compositor.CreateEffectFactory(graphicsEffect, new[] { "Blur.BlurAmount" });
+
+			_brush = blurEffectFactory.CreateBrush();
+			var destinationBrush = _compositor.CreateBackdropBrush();
+			_brush.SetSourceParameter("Backdrop", destinationBrush);
+			var blurSprite = _compositor.CreateSpriteVisual();
+			blurSprite.Size = new Vector2((float)backgroundImage.ActualWidth, (float)backgroundImage.ActualHeight);
+			blurSprite.Brush = _brush;
+			ElementCompositionPreview.SetElementChildVisual(backgroundImage, blurSprite);
 		}
 
 		private void HamburgerButton_Click(object sender, RoutedEventArgs e)
@@ -51,13 +86,29 @@ namespace SJCAM
 			appSplit.IsPaneOpen = !appSplit.IsPaneOpen;
 		}
 
-		private async void backgroundImage_Loaded(object sender, RoutedEventArgs e)
+		private void backgroundImage_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			Dominant = await Images.saveImage(backgroundImage);
-			splitGrid.Background = new SolidColorBrush(Dominant);
-			var view = ApplicationView.GetForCurrentView();
-			view.TitleBar.BackgroundColor = Dominant;
-			view.TitleBar.ButtonBackgroundColor = Dominant;
+			SpriteVisual blurVisual = (SpriteVisual)ElementCompositionPreview.GetElementChildVisual(backgroundImage);
+			if (blurVisual != null)
+				blurVisual.Size = e.NewSize.ToVector2();
+		}
+
+		private void StartBlurAnimation()
+		{
+			ScalarKeyFrameAnimation blurAnimation = _compositor.CreateScalarKeyFrameAnimation();
+			blurAnimation.InsertKeyFrame(0.0f, 0.0f);
+			blurAnimation.InsertKeyFrame(1.0f, 10.0f);
+			blurAnimation.Duration = TimeSpan.FromSeconds(2);
+			blurAnimation.IterationBehavior = AnimationIterationBehavior.Count;
+			blurAnimation.IterationCount = 1;
+			_brush.StartAnimation("Blur.BlurAmount", blurAnimation);
+		}
+
+		private void Page_Loaded(object sender, RoutedEventArgs e)
+		{
+			Blur();
+			_brush.Properties.InsertScalar("Blur.BlurAmount", 0);
+			StartBlurAnimation();
 		}
 	}
 }

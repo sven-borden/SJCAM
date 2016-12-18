@@ -5,7 +5,7 @@
     xmlns:local="using:SJCAM"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Loaded="Page_Loaded">
 
 	<Page.Resources>
 		<Style x:Key="Title" TargetType="TextBlock">
@@ -40,7 +40,7 @@
 	</Page.Resources>
 
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-		<Image x:Name="backgroundImage" Source="sunset.jpg" Stretch="UniformToFill" Loaded="backgroundImage_Loaded" />
+		<Image x:Name="backgroundImage" Source="http://1.bp.blogspot.com/-fIIXrDNarGE/UGo3e-o_f9I/AAAAAAAAGEs/f7SmLFsIhjg/s1600/landscape_hd.jpg" SizeChanged="backgroundImage_SizeChanged" Stretch="UniformToFill"/>
 		<SplitView x:Name="appSplit" DisplayMode="CompactOverlay" IsPaneOpen="false" CompactPaneLength="50" OpenPaneLength="150">
 			<SplitView.Pane>
 				<Grid Background="Transparent" Name="splitGrid">

@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SJCAM"
-	xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -11,32 +10,45 @@
 	<Page.Resources>
 		<Style x:Key="Title" TargetType="TextBlock">
 			<Setter Property="FontSize" Value="40"/>
+			<Setter Property="Foreground" Value="WhiteSmoke" />
 			<Setter Property="HorizontalAlignment" Value="Center" />
 			<Setter Property="VerticalAlignment" Value="Center" />
-			<Setter Property="Margin" Value="30" />
+			<Setter Property="Margin" Value="30,30,30,0" />
+		</Style>
+		<Style x:Key="Description" TargetType="TextBlock">
+			<Setter Property="FontSize" Value="20"/>
+			<Setter Property="Foreground" Value="WhiteSmoke" />
+			<Setter Property="HorizontalAlignment" Value="Center" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="TextWrapping" Value="Wrap" />
+			<Setter Property="TextAlignment" Value="DetectFromContent" />
+			<Setter Property="Margin" Value="10" />
 		</Style>
 		<Style x:Key="Bsplit" TargetType="Button">
 			<Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+			<Setter Property="Foreground" Value="WhiteSmoke" />
 			<Setter Property="Width" Value="50" />
 			<Setter Property="Height" Value="50"/>
 			<Setter Property="Background" Value="Transparent" />
 			<Setter Property="Content" Value="&#xE10F;" />
 		</Style>
 		<Style x:Key="Tsplit" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="WhiteSmoke" />
 			<Setter Property="FontSize" Value="18"/>
 			<Setter Property="VerticalAlignment" Value="Center" />
 		</Style>
 	</Page.Resources>
-	
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+		<Image x:Name="backgroundImage" Source="sunset.jpg" Stretch="UniformToFill" Loaded="backgroundImage_Loaded" />
 		<SplitView x:Name="appSplit" DisplayMode="CompactOverlay" IsPaneOpen="false" CompactPaneLength="50" OpenPaneLength="150">
 			<SplitView.Pane>
-				<Grid Background="LightGray">
+				<Grid Background="Transparent" Name="splitGrid">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="*" />
 						<RowDefinition Height="Auto" />
 					</Grid.RowDefinitions>
-					
+
 					<StackPanel Grid.Row="0">
 						<Button x:Name="HamburgerButton" Style="{StaticResource Bsplit}" Content="&#xE700;" Click="HamburgerButton_Click"/>
 						<StackPanel Orientation="Horizontal">
@@ -67,13 +79,15 @@
 			</SplitView.Pane>
 			<SplitView.Content>
 				<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-					<canvas:CanvasControl x:Name="backgroundCanvas" Draw="backgroundCanvas_Draw" CreateResources="backgroundCanvas_CreateResources" />
-					<!--<Image x:Name="backgroundImage" Source="http://d13fo19pohlmh8.cloudfront.net/media/assets/09e3fc49dbbcf9b40049c1e8ecf068ea.jpeg"/>-->
-					<StackPanel>
-						<TextBlock Text="SJCAM" Style="{StaticResource Title}"/>
-					</StackPanel>
+					<MediaElement Name="player" Visibility="Collapsed"/>
+					<ScrollViewer>
+						<StackPanel>
+							<TextBlock Text="{x:Bind Title}" Style="{StaticResource Title}"/>
+							<TextBlock Text="{x:Bind Description}" Style="{StaticResource Description}" />
+						</StackPanel>
+					</ScrollViewer>
 				</Grid>
 			</SplitView.Content>
 		</SplitView>
-    </Grid>
+	</Grid>
 </Page>

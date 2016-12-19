@@ -5,89 +5,38 @@
     xmlns:local="using:SJCAM"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d" Loaded="Page_Loaded">
-
-	<Page.Resources>
-		<Style x:Key="Title" TargetType="TextBlock">
-			<Setter Property="FontSize" Value="40"/>
-			<Setter Property="Foreground" Value="WhiteSmoke" />
-			<Setter Property="HorizontalAlignment" Value="Center" />
-			<Setter Property="VerticalAlignment" Value="Center" />
-			<Setter Property="Margin" Value="30,30,30,0" />
-		</Style>
-		<Style x:Key="Description" TargetType="TextBlock">
-			<Setter Property="FontSize" Value="20"/>
-			<Setter Property="Foreground" Value="WhiteSmoke" />
-			<Setter Property="HorizontalAlignment" Value="Center" />
-			<Setter Property="VerticalAlignment" Value="Center" />
-			<Setter Property="TextWrapping" Value="Wrap" />
-			<Setter Property="TextAlignment" Value="DetectFromContent" />
-			<Setter Property="Margin" Value="10" />
-		</Style>
-		<Style x:Key="Bsplit" TargetType="Button">
-			<Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
-			<Setter Property="Foreground" Value="WhiteSmoke" />
-			<Setter Property="Width" Value="50" />
-			<Setter Property="Height" Value="50"/>
-			<Setter Property="Background" Value="Transparent" />
-			<Setter Property="Content" Value="&#xE10F;" />
-		</Style>
-		<Style x:Key="Tsplit" TargetType="TextBlock">
-			<Setter Property="Foreground" Value="WhiteSmoke" />
-			<Setter Property="FontSize" Value="18"/>
-			<Setter Property="VerticalAlignment" Value="Center" />
-		</Style>
+    <Page.Resources>
+		<Storyboard x:Name="All"/>
+		<DataTemplate x:Key="ButtonTemplate">
+			<Button Style="{StaticResource GridMainButton}">
+				<Border Style="{StaticResource GridMainBorder}">
+					<StackPanel>
+						<TextBlock Style="{StaticResource GridMainTextBlock}" Text="{Binding Name}" />
+						<TextBlock Style="{StaticResource GridMainIconTextBlock}" Text="{Binding Glyph.Text}" />
+					</StackPanel>
+				</Border>
+			</Button>
+		</DataTemplate>
 	</Page.Resources>
 
-	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-		<Image x:Name="backgroundImage" Source="http://1.bp.blogspot.com/-fIIXrDNarGE/UGo3e-o_f9I/AAAAAAAAGEs/f7SmLFsIhjg/s1600/landscape_hd.jpg" SizeChanged="backgroundImage_SizeChanged" Stretch="UniformToFill"/>
-		<SplitView x:Name="appSplit" DisplayMode="CompactOverlay" IsPaneOpen="false" CompactPaneLength="50" OpenPaneLength="150">
-			<SplitView.Pane>
-				<Grid Background="Transparent" Name="splitGrid">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="*" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
 
-					<StackPanel Grid.Row="0">
-						<Button x:Name="HamburgerButton" Style="{StaticResource Bsplit}" Content="&#xE700;" Click="HamburgerButton_Click"/>
-						<StackPanel Orientation="Horizontal">
-							<Button x:Name="Home" Style="{StaticResource Bsplit}" Content="&#xE10F;" />
-							<TextBlock Text="Home" Style="{StaticResource Tsplit}" />
-						</StackPanel>
-						<StackPanel Orientation="Horizontal">
-							<Button x:Name="Battery" Style="{StaticResource Bsplit}" Content="&#xE856;" />
-							<TextBlock Text="Battery" Style="{StaticResource Tsplit}" />
-						</StackPanel>
-						<StackPanel Orientation="Horizontal">
-							<Button x:Name="Video" Style="{StaticResource Bsplit}" Content="&#xE20A;" />
-							<TextBlock Text="Video" Style="{StaticResource Tsplit}" />
-						</StackPanel>
-					</StackPanel>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Image x:Name="backgroundImage" VerticalAlignment="Center" HorizontalAlignment="Center" Source="background.jpg" SizeChanged="BackgroundImage_SizeChanged" Stretch="UniformToFill" Loaded="BackgroundImage_Loaded"/>
+        <Grid x:Name="grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+            <MediaElement Name="player" Visibility="Collapsed"/>
+            <ScrollViewer>
+				<StackPanel>
+					<TextBlock Text="{x:Bind Title}" Style="{StaticResource TitleTextBlock}"/>
+                    <TextBlock Text="{x:Bind Description}" Style="{StaticResource DescriptionTextBlock}" />
+					<controls:AdaptiveGridView x:Name="AdaptiveGridViewControl"
+							IsItemClickEnabled="False"
+							ItemTemplate="{StaticResource ButtonTemplate}" ItemsSource="{x:Bind Menu}"
+							HorizontalAlignment="Stretch" VerticalAlignment="Stretch" OneRowModeEnabled="False" DesiredWidth="200" ItemHeight="200"/>
+				</StackPanel>
+            </ScrollViewer>
+        </Grid>
 
-					<StackPanel Grid.Row="1">
-						<StackPanel Orientation="Horizontal">
-							<Button x:Name="SettingButton" Style="{StaticResource Bsplit}" Content="&#xE713;"/>
-							<TextBlock Style="{StaticResource Tsplit}" Text="Settings" />
-						</StackPanel>
-						<StackPanel Orientation="Horizontal">
-							<Button x:Name="AboutButton" Style="{StaticResource Bsplit}" Content="&#xE10C;"/>
-							<TextBlock Style="{StaticResource Tsplit}" Text="About" />
-						</StackPanel>
-					</StackPanel>
-				</Grid>
-			</SplitView.Pane>
-			<SplitView.Content>
-				<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-					<MediaElement Name="player" Visibility="Collapsed"/>
-					<ScrollViewer>
-						<StackPanel>
-							<TextBlock Text="{x:Bind Title}" Style="{StaticResource Title}"/>
-							<TextBlock Text="{x:Bind Description}" Style="{StaticResource Description}" />
-						</StackPanel>
-					</ScrollViewer>
-				</Grid>
-			</SplitView.Content>
-		</SplitView>
-	</Grid>
+    </Grid>
 </Page>

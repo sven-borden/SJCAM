@@ -2,8 +2,10 @@
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using SJCAM.Effects;
+using SJCAM.MainGrid;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -38,6 +40,7 @@ namespace SJCAM
 		Color Dominant;
 		public string Title { get; set; }
 		public string Description { get; set; }
+		public ObservableCollection<Clickable> Menu { get; set; }
 
 		private CompositionEffectBrush _brush;
 		private Compositor _compositor;
@@ -49,12 +52,21 @@ namespace SJCAM
 			Title = "SJCAM";	
 			Description = "Welcome!";
 			_compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+			CreateMenu();
+		}
+
+		private void CreateMenu()
+		{
+			Menu = new ObservableCollection<Clickable>();
+			Menu.Add(new Clickable("Photo", "\uE114" ));
+			Menu.Add(new Clickable("Video", "\uE116" ));
+			Menu.Add(new Clickable("Settings", "\uE179" ));
+			Menu.Add(new Clickable("Photo", "\uE114" ));
 		}
 
 		private async void Init()
 		{
 			Dominant = await Images.GetDominant();
-			splitGrid.Background = new SolidColorBrush(Dominant);
 			var view = ApplicationView.GetForCurrentView();
 			view.TitleBar.BackgroundColor = Dominant;
 			view.TitleBar.ButtonBackgroundColor = Dominant;
@@ -68,7 +80,6 @@ namespace SJCAM
 				Source = new CompositionEffectSourceParameter("Backdrop"),
 				BlurAmount = 50,
 				BorderMode = EffectBorderMode.Hard,
-
 			};
 			var blurEffectFactory = _compositor.CreateEffectFactory(graphicsEffect, new[] { "Blur.BlurAmount" });
 
@@ -81,12 +92,7 @@ namespace SJCAM
 			ElementCompositionPreview.SetElementChildVisual(backgroundImage, blurSprite);
 		}
 
-		private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-		{
-			appSplit.IsPaneOpen = !appSplit.IsPaneOpen;
-		}
-
-		private void backgroundImage_SizeChanged(object sender, SizeChangedEventArgs e)
+		private void BackgroundImage_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			SpriteVisual blurVisual = (SpriteVisual)ElementCompositionPreview.GetElementChildVisual(backgroundImage);
 			if (blurVisual != null)
@@ -106,6 +112,12 @@ namespace SJCAM
 
 		private void Page_Loaded(object sender, RoutedEventArgs e)
 		{
+			
+		}
+
+		private async void BackgroundImage_Loaded(object sender, RoutedEventArgs e)
+		{
+			await Task.Delay(2500);
 			Blur();
 			_brush.Properties.InsertScalar("Blur.BlurAmount", 0);
 			StartBlurAnimation();

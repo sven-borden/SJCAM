@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
 namespace SJCAM.MainGrid
@@ -11,6 +12,9 @@ namespace SJCAM.MainGrid
 	{
 		public string Name { get; set; }
 		public TextBlock Glyph { get; set; }
+		public Point Offset { get; set; }
+		public float Duration { get; set; }
+		public float Delay { get; set; }
 
 		public Clickable(string _name, string _glyph)
 		{

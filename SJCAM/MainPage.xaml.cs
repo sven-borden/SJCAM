@@ -28,6 +28,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Toolkit.Uwp.UI.Animations;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -42,14 +44,14 @@ namespace SJCAM
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public ObservableCollection<Clickable> Menu { get; set; }
-
+		public ObservableCollection<SubMenu> Sub { get; set; }
 		private float currentBlur = 0;
 		private CompositionEffectBrush _brush;
 		private Compositor _compositor;
 
 		public MainPage()
         {
-			Init();
+			InitAsync();
 			this.InitializeComponent();
 			Title = "SJCAM";	
 			Description = "Welcome!";
@@ -63,23 +65,27 @@ namespace SJCAM
 			Menu.Add(new Clickable("Photo", "\uE114" ));
 			Menu.Add(new Clickable("Video", "\uE116" ));
 			Menu.Add(new Clickable("Settings", "\uE179" ));
-			Menu.Add(new Clickable("Photo", "\uE114" ));
+			Menu.Add(new Clickable("Other", "\uE188" ));
 		}
 
-		private async void Init()
+		private async void InitAsync()
 		{
 			Dominant = await Images.GetDominant();
 			var view = ApplicationView.GetForCurrentView();
 			view.TitleBar.BackgroundColor = Dominant;
 			view.TitleBar.ButtonBackgroundColor = Dominant;
+			view.ExitFullScreenMode();
+			view.ShowStandardSystemOverlays();
 			SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
 			SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
 		}
 
-		private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
+		private async void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
 		{
 			e.Handled = true;
 			StartBlurAnimation();
+			ShowContent("Menu");
+			await AdaptiveGridViewControl.Fade(1, 500, 500).StartAsync();
 		}
 
 		private void Blur()
@@ -126,17 +132,90 @@ namespace SJCAM
 			
 		}
 
-		private async void BackgroundImage_Loaded(object sender, RoutedEventArgs e)
+		private void BackgroundImage_Loaded(object sender, RoutedEventArgs e)
 		{
-			await Task.Delay(2500);
 			Blur();
 			_brush.Properties.InsertScalar("Blur.BlurAmount", 0);
 			StartBlurAnimation();
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private async void AdaptiveGridViewControl_ItemClickAsync(object sender, ItemClickEventArgs e)
 		{
 			StartBlurAnimation(50f);
+			await (sender as AdaptiveGridView).Fade().StartAsync();
+
+			string currentName = (e.ClickedItem as Clickable).Name;
+			foreach (var item in AdaptiveGridViewControl.Items)
+				if ((item as Clickable).Name == currentName)
+					ShowContent(currentName);
+		}
+
+		private void ShowContent(string currentName)
+		{
+			switch (currentName)
+			{
+				case "Photo":
+					LoadPhoto();
+					break;
+				case "Video":
+					LoadVideo();
+						break;
+				case "Settings":
+					LoadSettings();
+					break;
+				default:
+					HideCurrent();
+					break;
+			}
+		}
+
+		private async void HideCurrent()
+		{
+			await player.Fade().StartAsync();
+			player.Visibility = Visibility.Collapsed;
+			await SubMenuStack.Fade().StartAsync();
+			SubMenuStack.Visibility = Visibility.Collapsed;
+		}
+
+		private async void LoadPhoto()
+		{
+			Sub = new ObservableCollection<SubMenu>();
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			SubMenuStack.Visibility = Visibility.Visible;
+			await SubMenuStack.Fade(1,1000,0).StartAsync();
+		}
+
+		private async void LoadVideo()
+		{
+			Sub = new ObservableCollection<SubMenu>();
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			SubMenuStack.Visibility = Visibility.Visible;
+			await SubMenuStack.Fade(1,1000,0).StartAsync();
+		}
+
+		private async void LoadSettings()
+		{
+			Sub = new ObservableCollection<SubMenu>();
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			Sub.Add(new SubMenu("test"));
+			SubMenuStack.Visibility = Visibility.Visible;
+			await SubMenuStack.Fade(1,1000,0).StartAsync();
+		}
+
+		private void MenuTapped(object sender, RoutedEventArgs e)
+		{
+			
 		}
 	}
 }

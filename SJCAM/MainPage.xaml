@@ -6,18 +6,32 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d" Loaded="Page_Loaded">
+	xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+	xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+	mc:Ignorable="d" Loaded="Page_Loaded">
     <Page.Resources>
 		<Storyboard x:Name="All"/>
 		<DataTemplate x:Key="ButtonTemplate">
-			<Button Style="{StaticResource GridMainButton}" Click="Button_Click">
-				<Border Style="{StaticResource GridMainBorder}">
-					<StackPanel>
-						<TextBlock Style="{StaticResource GridMainTextBlock}" Text="{Binding Name}" />
-						<TextBlock Style="{StaticResource GridMainIconTextBlock}" Text="{Binding Glyph.Text}" />
-					</StackPanel>
-				</Border>
-			</Button>
+				<interactivity:Interaction.Behaviors>
+
+				</interactivity:Interaction.Behaviors>
+			<controls:DropShadowPanel BlurRadius="100"
+                                  ShadowOpacity="0.3"
+                                  OffsetX="0"
+                                  OffsetY="0"
+                                  Color="Gray"
+                                  VerticalAlignment="Stretch"
+                                  HorizontalAlignment="Stretch">
+
+				<StackPanel>
+					<TextBlock Style="{StaticResource GridMainIconTextBlock}" Text="{Binding Glyph.Text}" />
+					<TextBlock Style="{StaticResource GridMainTextBlock}" Text="{Binding Name}" />
+				</StackPanel>
+			</controls:DropShadowPanel>
+		</DataTemplate>
+
+		<DataTemplate x:Key="GeneralSubMenu">
+			<TextBlock Text="{Binding Name}" Style="{StaticResource DescriptionTextBlock}"/>
 		</DataTemplate>
 	</Page.Resources>
 
@@ -26,17 +40,21 @@
         <Image x:Name="backgroundImage" VerticalAlignment="Center" HorizontalAlignment="Center" Source="background.jpg" SizeChanged="BackgroundImage_SizeChanged" Stretch="UniformToFill" Loaded="BackgroundImage_Loaded"/>
         <Grid x:Name="grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
             <MediaElement Name="player" Visibility="Collapsed"/>
-            <ScrollViewer>
-				<StackPanel>
-					<TextBlock Text="{x:Bind Title}" Style="{StaticResource TitleTextBlock}"/>
-                    <TextBlock Text="{x:Bind Description}" Style="{StaticResource DescriptionTextBlock}" />
+			<StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+				<TextBlock Text="{x:Bind Title}" Style="{StaticResource TitleTextBlock}"/>
+				<TextBlock Text="{x:Bind Description}" Style="{StaticResource DescriptionTextBlock}" />
+				<Grid>
 					<controls:AdaptiveGridView x:Name="AdaptiveGridViewControl"
-							IsItemClickEnabled="False"
-							ItemTemplate="{StaticResource ButtonTemplate}" ItemsSource="{x:Bind Menu}"
-							HorizontalAlignment="Stretch" VerticalAlignment="Stretch" OneRowModeEnabled="False" DesiredWidth="200" ItemHeight="200"/>
-				</StackPanel>
-            </ScrollViewer>
-        </Grid>
+						IsItemClickEnabled="True" ItemClick="AdaptiveGridViewControl_ItemClickAsync" BorderThickness="0" SelectionMode="None"
+						ItemTemplate="{StaticResource ButtonTemplate}" ItemsSource="{x:Bind Menu}"
+						HorizontalAlignment="Stretch" VerticalAlignment="Stretch" OneRowModeEnabled="False" DesiredWidth="200" ItemHeight="200"/>
+					<StackPanel Name="SubMenuStack" Visibility="Collapsed">
+						<controls:AdaptiveGridView BorderThickness="0" ItemTemplate="{StaticResource GeneralSubMenu}" ItemsSource="{x:Bind Sub}">
+						</controls:AdaptiveGridView>
+					</StackPanel>
+				</Grid>
+			</StackPanel>
+		</Grid>
 
     </Grid>
 </Page>

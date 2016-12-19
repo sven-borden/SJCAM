@@ -25,9 +25,11 @@
 	</Style>
 	<Style x:Key="GridMainTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DescriptionTextBlock}">
 		<Setter Property="FontSize" Value="17" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="VerticalAlignment" Value="Center" />
 	</Style>
-	<Style x:Key="GridMainIconTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DescriptionTextBlock}">
-		<Setter Property="FontSize" Value="40" />
+	<Style x:Key="GridMainIconTextBlock" TargetType="TextBlock" BasedOn="{StaticResource GridMainTextBlock}">
+		<Setter Property="FontSize" Value="90" />
 		<Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
 	</Style>
 
@@ -37,10 +39,13 @@
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="HorizontalAlignment" Value="Center" />
 		<Setter Property="VerticalAlignment" Value="Center" />
-		<Setter Property="Width" Value="300" />
-		<Setter Property="Height" Value="300" />
 		<Setter Property="Margin" Value="1" />
 		<Setter Property="FontSize" Value="30" />
+		<Setter Property="FocusVisualPrimaryBrush" Value="Transparent" />
+		<Setter Property="FocusVisualSecondaryBrush" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="IsFocusEngagementEnabled" Value="False" />
 	</Style>
 	
 	<!--FONTICON-->
@@ -57,8 +62,10 @@
 		<Setter Property="BorderBrush" Value="WhiteSmoke" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="CornerRadius" Value="5"/>
-		<Setter Property="HorizontalAlignment" Value="Center" />
-		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="VerticalAlignment" Value="Stretch" />
+		<Setter Property="Width" Value="220" />
+		<Setter Property="Height" Value="220" />
 	</Style>
 	
 	<!--GRIDVIEWITEM-->
@@ -66,5 +73,12 @@
 		<Setter Property="Margin" Value="30" />
 		<Setter Property="VerticalAlignment" Value="Stretch" />
 		<Setter Property="HorizontalAlignment" Value="Stretch" />
+	</Style>
+	
+	<!--IMAGE-->
+	<Style x:Key="BackGroundImage" TargetType="Image">
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="Stretch" Value="UniformToFill" />
 	</Style>
 </ResourceDictionary>

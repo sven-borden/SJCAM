@@ -10,7 +10,7 @@
     <Page.Resources>
 		<Storyboard x:Name="All"/>
 		<DataTemplate x:Key="ButtonTemplate">
-			<Button Style="{StaticResource GridMainButton}">
+			<Button Style="{StaticResource GridMainButton}" Click="Button_Click">
 				<Border Style="{StaticResource GridMainBorder}">
 					<StackPanel>
 						<TextBlock Style="{StaticResource GridMainTextBlock}" Text="{Binding Name}" />

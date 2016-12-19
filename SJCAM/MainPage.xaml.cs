@@ -17,6 +17,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Composition;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -42,6 +43,7 @@ namespace SJCAM
 		public string Description { get; set; }
 		public ObservableCollection<Clickable> Menu { get; set; }
 
+		private float currentBlur = 0;
 		private CompositionEffectBrush _brush;
 		private Compositor _compositor;
 
@@ -70,6 +72,14 @@ namespace SJCAM
 			var view = ApplicationView.GetForCurrentView();
 			view.TitleBar.BackgroundColor = Dominant;
 			view.TitleBar.ButtonBackgroundColor = Dominant;
+			SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
+			SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+		}
+
+		private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
+		{
+			e.Handled = true;
+			StartBlurAnimation();
 		}
 
 		private void Blur()
@@ -99,11 +109,12 @@ namespace SJCAM
 				blurVisual.Size = e.NewSize.ToVector2();
 		}
 
-		private void StartBlurAnimation()
+		private void StartBlurAnimation(float _toBlurAmount = 10)
 		{
 			ScalarKeyFrameAnimation blurAnimation = _compositor.CreateScalarKeyFrameAnimation();
-			blurAnimation.InsertKeyFrame(0.0f, 0.0f);
-			blurAnimation.InsertKeyFrame(1.0f, 10.0f);
+			blurAnimation.InsertKeyFrame(0.0f, currentBlur);
+			blurAnimation.InsertKeyFrame(1.0f, _toBlurAmount);
+			currentBlur = _toBlurAmount;
 			blurAnimation.Duration = TimeSpan.FromSeconds(2);
 			blurAnimation.IterationBehavior = AnimationIterationBehavior.Count;
 			blurAnimation.IterationCount = 1;
@@ -121,6 +132,11 @@ namespace SJCAM
 			Blur();
 			_brush.Properties.InsertScalar("Blur.BlurAmount", 0);
 			StartBlurAnimation();
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			StartBlurAnimation(50f);
 		}
 	}
 }

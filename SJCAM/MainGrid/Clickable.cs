@@ -15,7 +15,7 @@ namespace SJCAM.MainGrid
 		public Clickable(string _name, string _glyph)
 		{
 			Name = _name;
-			Glyph = new TextBlock() { Text = _glyph, FontFamily = "Segoe MDL2 Assets" };
+			Glyph = new TextBlock() { Text = _glyph, FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets") };
 		}
 	}
 }

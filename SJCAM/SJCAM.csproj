@@ -98,6 +98,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Direct\Command.cs" />
+    <Compile Include="Direct\Mode.cs" />
     <Compile Include="Effects\Images.cs" />
     <Compile Include="MainGrid\Clickable.cs" />
     <Compile Include="MainGrid\SubMenu.cs" />

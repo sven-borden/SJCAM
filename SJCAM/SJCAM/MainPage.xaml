@@ -15,9 +15,14 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 			<!--Connection status-->
-			<StackPanel Orientation="Horizontal" Grid.Row="0" Name="ConnectStatusBar">
-				
-			</StackPanel>
+			<Grid Grid.Row="0" Name="ConnectStatusBar" HorizontalAlignment="Stretch">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<TextBlock Style="{StaticResource StatusBarTextBlock}" Text="{x:Bind ConnectionStatusText}" />
+				<ProgressBar Grid.Column="1" Name="ConnectStatusProgressBar" IsIndeterminate="True" Margin="10" HorizontalAlignment="Stretch" Maximum="10"/>
+			</Grid>
 			
 			<StackPanel Name="MainStack" Grid.Row="1">
 				<TextBlock Style="{StaticResource TitleTextBlock}" Text="{x:Bind Title}" />

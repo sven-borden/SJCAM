@@ -27,22 +27,32 @@ namespace SJCAM
     {
 		public string Title = string.Empty;
 		public string Description = string.Empty;
+		public string ConnectionStatusText = string.Empty;
         public MainPage()
         {
 			Title = "SJCAM";
-			Description = "Choose a category"
+			Description = "Choose a category";
+			ConnectionStatusText = "Try connecting";
             this.InitializeComponent();
 			CheckConnection();
         }
 
-		private void CheckConnection()
+		private async void CheckConnection()
 		{
-			ConnectStatusBar.Background = AppColor.GetConnectionColor(ConnectionStatus.IsOverWifi());
+			bool _conn = await ConnectionStatus.WifiNameAsync(ConnectStatusProgressBar);
+			if (_conn)
+				ConnectionStatusText = "Connected";
+			else
+			{
+				ConnectionStatusText = "Not Connected";
+				ConnectStatusProgressBar.IsIndeterminate = true;
+			}
+			ConnectStatusBar.Background = AppColor.GetConnectionColor(_conn);
 		}
 
 		private async void Image_Loaded(object sender, RoutedEventArgs e)
 		{
-			await (sender as Image).Blur(8f,2000,300).StartAsync();
+			await (sender as Image).Blur(8f,2000,1000).StartAsync();
 
 		}
 	}

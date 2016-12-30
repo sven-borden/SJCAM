@@ -1,6 +1,12 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "Microsoft.Toolkit.Uwp.Services": "1.2.0",
+    "Microsoft.Toolkit.Uwp.UI": "1.2.0",
+    "Microsoft.Toolkit.Uwp.UI.Animations": "1.2.0",
+    "Microsoft.Toolkit.Uwp.UI.Controls": "1.2.0",
+    "PullToRefresh.UWP": "0.3.4",
+    "WhatsNew.UWP": "1.0.0"
   },
   "frameworks": {
     "uap10.0": {}

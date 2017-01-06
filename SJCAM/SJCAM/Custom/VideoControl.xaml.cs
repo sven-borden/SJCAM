@@ -19,20 +19,26 @@ using Windows.UI.Xaml.Navigation;
 
 namespace SJCAM.Custom
 {
-	public sealed partial class PhotoControl : UserControl
+	public sealed partial class VideoControl : UserControl
 	{
 		public List<string> ResolutionString { get; set; }
 		Logic.Action action;
 		bool locked = false;
-		public PhotoControl()
+		bool isRecording = false;
+		public string RemainingTime { get; set; }
+
+		public VideoControl()
 		{
 			ResolutionString = new List<string>()
 			{
-				"16Mpx", "14Mpx", "12Mpx", "10Mpx", "8Mpx", "5Mpx","3Mpx", "VGA"
+				"2K 30fps", "1080p 60fps", "1080p 30fps", "720p 120fps", "720p 60fps", "720p 30fps","480p 240fps"
 			};
+
 			action = new Logic.Action();
 			this.InitializeComponent();
+			CheckIsRecording();
 			CheckSettings();
+			UpdateTimeRemain();
 		}
 
 		private async void CheckSettings()
@@ -44,14 +50,40 @@ namespace SJCAM.Custom
 			string[] Status = x.Split(new string[] { "<Status>", "</Status>" }, StringSplitOptions.RemoveEmptyEntries);
 			for (int i = 0; i < Cmd.Length; i++)
 			{
-				Debug.WriteLine(Cmd[i]);
-				if (Cmd[i].Contains("1002"))
+				if (Cmd[i].Contains("2002"))
 				{
 					ResolutionCombo.SelectedIndex = Convert.ToInt32(Status[i]);
 					return;
 				}
 			}
 		}
+
+		private async void CheckIsRecording()
+		{
+			string x = await action.GetRequestAsync("2016");
+			if (x == null)
+				return;
+			string[] temp = x.Split(new string[] { "<Value>", "</Value>" }, StringSplitOptions.RemoveEmptyEntries);
+			if (temp[1] == "0")
+				SnapButton.Content = "Start";
+			else
+				SnapButton.Content = "Stop";
+		}
+
+		private async void UpdateTimeRemain()
+		{
+			string x = await action.GetRequestAsync("2009");
+			if (x == null)
+				return;
+			string[] temp = x.Split(new string[] { "<Value>", "</Value>" }, StringSplitOptions.RemoveEmptyEntries);
+			int second = Convert.ToInt32(temp[1]);
+
+			RemainingTime = (second / 3600).ToString() + "h:"; second = second % 3600;
+			RemainingTime += (second / 60).ToString() + "m:"; second = second % 60;
+			RemainingTime += (second).ToString() + "s";
+			Remain.Text = RemainingTime;
+		}
+
 
 		/// <summary>
 		/// Snap a picture
@@ -61,7 +93,18 @@ namespace SJCAM.Custom
 		private async void Button_ClickAsync(object sender, RoutedEventArgs e)
 		{
 			Waiting();
-			string msg = await action.GetRequestAsync("1001");
+			if (isRecording)
+			{
+				string msg = await action.GetRequestAsync("2001", "0");
+				SnapButton.Content = "Start";
+				isRecording = !isRecording;
+			}
+			else
+			{
+				string msg = await action.GetRequestAsync("2001", "1");
+				SnapButton.Content = "Stop";
+				isRecording = !isRecording;
+			}
 			Waiting();
 		}
 
@@ -69,7 +112,8 @@ namespace SJCAM.Custom
 		{
 			int selected = ResolutionCombo.SelectedIndex;
 			Waiting();
-			string msg = await action.GetRequestAsync("1002", selected.ToString());
+			string msg = await action.GetRequestAsync("2002", selected.ToString());
+			UpdateTimeRemain();
 			Waiting();
 		}
 		private void Waiting()

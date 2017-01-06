@@ -1,0 +1,47 @@
+﻿<UserControl
+    x:Class="SJCAM.Custom.SettingsControls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SJCAM.Custom"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+	<Grid>
+		<ScrollViewer VerticalScrollMode="Enabled" IsEnabled="True" IsVerticalScrollChainingEnabled="True" IsVerticalRailEnabled="True" Height="{Binding ElementName=MainStack, Path=ActualHeight}">
+			<StackPanel HorizontalAlignment="Center">
+				<StackPanel.ChildrenTransitions>
+					<TransitionCollection>
+						<EdgeUIThemeTransition Edge="top" />
+					</TransitionCollection>
+				</StackPanel.ChildrenTransitions>
+
+				<StackPanel Orientation="Horizontal">
+					<ToggleButton Style="{StaticResource OptionToggle}" Content="Gyro" Name="ToggleGyro" Click="ToggleGyro_Click" />
+					<ToggleButton Style="{StaticResource OptionToggle}" Content="Audio" Name="ToggleAudio" Click="ToggleAudio_Click"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<ToggleButton Style="{StaticResource OptionToggle}" Content="WDR" Name="ToggleWDR" Click="ToggleWDR_Click"/>
+					<ToggleButton Style="{StaticResource OptionToggle}" Content="Stamp" Name="ToggleStamp" />
+				</StackPanel>
+
+				<TextBlock Style="{StaticResource GridSettingTextBlock}" Text="Exposure"/>
+				<ComboBox Name="ComboExposure" Margin="20,0,20,20" HorizontalAlignment="Stretch" PlaceholderText="Exposure" SelectionChanged="ComboExposure_SelectionChanged" ItemsSource="{x:Bind Exposure}"/>
+
+				<TextBlock Style="{StaticResource GridSettingTextBlock}" Text="White Balance"/>
+				<ComboBox Name="ComboWhiteBalance" Margin="20,0,20,20" HorizontalAlignment="Stretch" PlaceholderText="White Balance" SelectionChanged="ComboWhiteBalance_SelectionChanged" ItemsSource="{x:Bind WhiteBalance}"/>
+
+				<TextBlock Style="{StaticResource GridSettingTextBlock}" Text="Photo lapse interval"/>
+				<ComboBox Name="ComboPhotoLapseInterval" Margin="20,0,20,20" HorizontalAlignment="Stretch" PlaceholderText="Photo lapse interval"  SelectionChanged="ComboPhotoLapseInterval_SelectionChanged" ItemsSource="{x:Bind PhotoLapse}"/>
+
+				<TextBlock Style="{StaticResource GridSettingTextBlock}" Text="Video lapse interval"/>
+				<ComboBox Name="ComboVideoLapseInterval" Margin="20,0,20,20" HorizontalAlignment="Stretch" PlaceholderText="Video lapse interval"  SelectionChanged="ComboVideoLapseInterval_SelectionChanged" ItemsSource="{x:Bind VideoLapse}"/>
+
+				<TextBlock Style="{StaticResource GridSettingTextBlock}" Text="Auto power off"/>
+				<ComboBox Name="ComboAutoPowerOff" Margin="20,0,20,20" HorizontalAlignment="Stretch" PlaceholderText="Auto power off"  SelectionChanged="ComboAutoPowerOff_SelectionChanged" ItemsSource="{x:Bind AutoPower}"/>
+
+			</StackPanel>
+		</ScrollViewer>
+		<ProgressRing x:Name="Ring" IsActive="True" Width="200" Height="200" Visibility="Collapsed"/>
+	</Grid>
+</UserControl>

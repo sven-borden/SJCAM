@@ -30,10 +30,11 @@
 		<Setter Property="VerticalAlignment" Value="Center" />
 		<Setter Property="Margin" Value="10" />
 	</Style>
-	<Style x:Key="GridMainTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DescriptionTextBlock}">
+	<Style x:Key="GridSettingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DescriptionTextBlock}">
 		<Setter Property="FontSize" Value="17" />
-		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="Margin" Value="20,3,20,0" />
 	</Style>
 	<Style x:Key="GridMainIconTextBlock" TargetType="TextBlock" BasedOn="{StaticResource GridMainTextBlock}">
 		<Setter Property="FontSize" Value="90" />
@@ -55,5 +56,13 @@
 		<Setter Property="Foreground" Value="WhiteSmoke" />
 		<Setter Property="Width" Value="100" />
 		<Setter Property="Height" Value="100" />
+	</Style>
+	<!--TOGGLEBUTTON-->
+	<Style x:Key="OptionToggle" TargetType="ToggleButton">
+		<Setter Property="FontSize" Value="20" />
+		<Setter Property="Foreground" Value="WhiteSmoke" />
+		<Setter Property="MinHeight" Value="50" />
+		<Setter Property="MinWidth" Value="100" />
+		<Setter Property="Margin" Value="20" />
 	</Style>
 </ResourceDictionary>

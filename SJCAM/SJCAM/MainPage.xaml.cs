@@ -33,16 +33,10 @@ namespace SJCAM
 		public string Description = string.Empty;
 		public string ConnectionStatusText = string.Empty;
 		public Visibility connectionBarVisibility;
-		public ObservableCollection<object> ListSettings;
 		private Logic.Action action;
 
         public MainPage()
         {
-			ListSettings = new ObservableCollection<object>
-			{
-				new Setting(){Name = "test", Description = "descrip" },
-				new Setting(){Name = "test", Description = "2" }
-			};
 			Title = "SJCAM";
 			Description = "Choose a category";
 			ConnectionStatusText = "Try connecting";
@@ -74,25 +68,37 @@ namespace SJCAM
 		private async void Image_Loaded(object sender, RoutedEventArgs e)
 		{
 			await (sender as Image).Blur(8f,2000,1000).StartAsync();
-
 		}
 
 		private async void PhotoButton_ClickAsync(object sender, RoutedEventArgs e)
 		{
+			Title = "Photo";
+			Bindings.Update();
 			CanvasPlace.Children.Clear();
 			CanvasPlace.Children.Add(new PhotoControl());
-			await action.BuildRequestAsync("3001", "0");
+			await action.GetRequestAsync("3001", "0");
 		}
 
 		private async void VideoButton_ClickAsync(object sender, RoutedEventArgs e)
 		{
+			Title = "Video";
+			Bindings.Update();
 			CanvasPlace.Children.Clear();
-			await action.BuildRequestAsync("3001", "1");
+			CanvasPlace.Children.Add(new VideoControl());
+			await action.GetRequestAsync("3001", "1");
 		}
 
 		private async void OtherButton_ClickAsync(object sender, RoutedEventArgs e)
 		{
-			await Task.Delay(5);
+			Bindings.Update();
+			Title = "Settings";
+			CanvasPlace.Children.Clear();
+			CanvasPlace.Children.Add(new SettingsControls());
+		}
+
+		private async void Button_Click(object sender, RoutedEventArgs e)
+		{
+			TestBox.Text = await action.GetRequestAsync(Cmd.Text, Param.Text);
 		}
 	}
 }

@@ -9,24 +9,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d">
 
-	<UserControl.Transitions>
-		<TransitionCollection>
-			<EdgeUIThemeTransition Edge="Top"/>
-		</TransitionCollection>
-	</UserControl.Transitions>
-
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<Image Source="background.jpg" Stretch="UniformToFill" HorizontalAlignment="Center" Loaded="Image_Loaded"/>
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
+			
 			<Grid.ChildrenTransitions>
 				<TransitionCollection>
 					<EdgeUIThemeTransition Edge="top" />
 				</TransitionCollection>
 			</Grid.ChildrenTransitions>
+			
 			<!--Connection status-->
 			<Grid Grid.Row="0" Name="ConnectStatusBar" HorizontalAlignment="Stretch" Visibility="{x:Bind connectionBarVisibility}">
 				
@@ -39,15 +36,28 @@
 				<ProgressBar Grid.Column="1" Name="ConnectStatusProgressBar" IsIndeterminate="True" Margin="10" HorizontalAlignment="Stretch" Maximum="10"/>
 			</Grid>
 			
+			<!--Main-->
 			<StackPanel Name="MainStack" Grid.Row="1">
 				<TextBlock Style="{StaticResource TitleTextBlock}" Text="{x:Bind Title}" />
 				<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="{x:Bind Description}" />
-				<ListView ItemsSource="{x:Bind ListSettings}">
-					<DataTemplate x:DataType="Set:Setting">
-						<TextBlock Text="{x:Bind Description}"/>
-					</DataTemplate>
-				</ListView>
+				<StackPanel Name="CanvasPlace">
+					
+				</StackPanel>
 			</StackPanel>
+			
+			<!--Bottom-->
+			<Grid Grid.Row="2" HorizontalAlignment="Center">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<Button Style="{StaticResource MenuButton}" Name="PhotoButton" Content="&#xE114;" Click="PhotoButton_ClickAsync" Grid.Column="0" />
+				<Button Style="{StaticResource MenuButton}" Name="VideoButton" Content="&#xE116;" Click="VideoButton_ClickAsync" Grid.Column="1" />
+				<Button Style="{StaticResource MenuButton}" Name="OtherButton" Content="&#xE115;" Click="OtherButton_ClickAsync" Grid.Column="2"/>
+			</Grid>
 		</Grid>
 	</Grid>
 </Page>
+	

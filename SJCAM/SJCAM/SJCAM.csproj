@@ -95,6 +95,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Custom\MultipleOptionControl.xaml.cs">
+      <DependentUpon>MultipleOptionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Custom\PhotoControl.xaml.cs">
+      <DependentUpon>PhotoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Action.cs" />
     <Compile Include="Logic\ConnectionStatus.cs" />
     <Compile Include="Logic\Settings\MultipleOptionsSetting.cs" />
     <Compile Include="Logic\Settings\Setting.cs" />
@@ -127,6 +134,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Custom\MultipleOptionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom\PhotoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

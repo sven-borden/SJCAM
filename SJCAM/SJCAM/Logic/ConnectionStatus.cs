@@ -83,8 +83,8 @@ namespace SJCAM.Logic
 					if (network.Ssid.Contains("M20"))
 					{
 						bar.Value += 3;
-						PasswordCredential pass = new PasswordCredential(null, null, "12345678");
-						var connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Manual, pass);
+						//PasswordCredential pass = new PasswordCredential(null, null, "12345678");
+						var connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Manual);
 						Debug.WriteLine("After");
 						if (connectionResult.ConnectionStatus != WiFiConnectionStatus.Success)
 						{

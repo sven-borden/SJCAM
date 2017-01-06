@@ -39,4 +39,21 @@
 		<Setter Property="FontSize" Value="90" />
 		<Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
 	</Style>
+	
+	<!--BUTTON -->
+	<Style x:Key="MenuButton" TargetType="Button">
+		<Setter Property="Margin" Value="10" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="FontSize" Value="20" />
+		<Setter Property="Foreground" Value="WhiteSmoke" />
+		<Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+	</Style>
+	<Style x:Key="StdButton" TargetType="Button">
+		<Setter Property="Margin" Value="10" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="FontSize" Value="20" />
+		<Setter Property="Foreground" Value="WhiteSmoke" />
+		<Setter Property="Width" Value="100" />
+		<Setter Property="Height" Value="100" />
+	</Style>
 </ResourceDictionary>

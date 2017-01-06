@@ -15,9 +15,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SJCAM.Logic;
+using SJCAM.Custom;
 using SJCAM.Style;
 using System.Collections.ObjectModel;
 using SJCAM.Logic.Settings;
+using System.Threading.Tasks;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace SJCAM
@@ -32,6 +34,7 @@ namespace SJCAM
 		public string ConnectionStatusText = string.Empty;
 		public Visibility connectionBarVisibility;
 		public ObservableCollection<object> ListSettings;
+		private Logic.Action action;
 
         public MainPage()
         {
@@ -44,7 +47,9 @@ namespace SJCAM
 			Description = "Choose a category";
 			ConnectionStatusText = "Try connecting";
 			connectionBarVisibility = Visibility.Collapsed;
+			action = new Logic.Action();
             this.InitializeComponent();
+
 			CheckConnection();
         }
 
@@ -59,9 +64,10 @@ namespace SJCAM
 				ConnectionStatusText = "Not Connected";
 				ConnectStatusProgressBar.IsIndeterminate = true;
 			}
+			//this.Bindings.Update();
 			ConnectStatusBar.Background = AppColor.GetConnectionColor(_conn);
 			DispatcherTimer coverOut = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 2) };
-			coverOut.Tick += (t, e) => { connectionBarVisibility = Visibility.Collapsed; (t as DispatcherTimer).Stop(); this.Bindings.Update(); }; 
+			coverOut.Tick += (t, e) => { connectionBarVisibility = Visibility.Collapsed; ConnectStatusBar.Visibility = connectionBarVisibility; (t as DispatcherTimer).Stop(); }; 
 			coverOut.Start();
 		}
 
@@ -69,6 +75,24 @@ namespace SJCAM
 		{
 			await (sender as Image).Blur(8f,2000,1000).StartAsync();
 
+		}
+
+		private async void PhotoButton_ClickAsync(object sender, RoutedEventArgs e)
+		{
+			CanvasPlace.Children.Clear();
+			CanvasPlace.Children.Add(new PhotoControl());
+			await action.BuildRequestAsync("3001", "0");
+		}
+
+		private async void VideoButton_ClickAsync(object sender, RoutedEventArgs e)
+		{
+			CanvasPlace.Children.Clear();
+			await action.BuildRequestAsync("3001", "1");
+		}
+
+		private async void OtherButton_ClickAsync(object sender, RoutedEventArgs e)
+		{
+			await Task.Delay(5);
 		}
 	}
 }

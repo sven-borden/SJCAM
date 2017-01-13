@@ -58,7 +58,7 @@ namespace SJCAM
 				ConnectionStatusText = "Not Connected";
 				ConnectStatusProgressBar.IsIndeterminate = true;
 			}
-			//this.Bindings.Update();
+			this.Bindings.Update();
 			ConnectStatusBar.Background = AppColor.GetConnectionColor(_conn);
 			DispatcherTimer coverOut = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 2) };
 			coverOut.Tick += (t, e) => { connectionBarVisibility = Visibility.Collapsed; ConnectStatusBar.Visibility = connectionBarVisibility; (t as DispatcherTimer).Stop(); }; 
@@ -76,7 +76,10 @@ namespace SJCAM
 			Bindings.Update();
 			CanvasPlace.Children.Clear();
 			CanvasPlace.Children.Add(new PhotoControl());
-			await action.GetRequestAsync("3001", "0");
+			try
+			{ await action.GetRequestAsync("3001", "0"); }
+			catch(Exception ex)
+			{ };
 		}
 
 		private async void VideoButton_ClickAsync(object sender, RoutedEventArgs e)
@@ -85,7 +88,10 @@ namespace SJCAM
 			Bindings.Update();
 			CanvasPlace.Children.Clear();
 			CanvasPlace.Children.Add(new VideoControl());
-			await action.GetRequestAsync("3001", "1");
+			try
+			{ await action.GetRequestAsync("3001", "1"); }
+			catch(Exception ex)
+			{ };
 		}
 
 		private async void OtherButton_ClickAsync(object sender, RoutedEventArgs e)
@@ -94,11 +100,6 @@ namespace SJCAM
 			Title = "Settings";
 			CanvasPlace.Children.Clear();
 			CanvasPlace.Children.Add(new SettingsControls());
-		}
-
-		private async void Button_Click(object sender, RoutedEventArgs e)
-		{
-			TestBox.Text = await action.GetRequestAsync(Cmd.Text, Param.Text);
 		}
 	}
 }

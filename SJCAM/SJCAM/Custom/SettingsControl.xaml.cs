@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SJCAM.Logic;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,7 +54,17 @@ namespace SJCAM.Custom
 				"3 min", "5 min", "10 min", "off"
 			};
 			this.InitializeComponent();
-			CheckSettings();
+			if (ConnectionStatus.IsConnected == true)
+			{
+				CheckSettings();
+			}
+			else
+			{
+				ToggleAudio.IsEnabled = false;
+				ToggleGyro.IsEnabled = false;
+				ToggleWDR.IsEnabled = false;
+				ToggleStamp.IsEnabled = false;
+			}
 		}
 
 		private async void CheckSettings()
@@ -124,12 +135,14 @@ namespace SJCAM.Custom
 			if (locked)
 				return;
 			Waiting();
+			(sender as ToggleButton).IsEnabled = false;
 			string par;
 			if (ToggleGyro.IsChecked == true)
 				par = "1";
 			else
 				par = "0";
 			string result = await action.GetRequestAsync("9001", par);
+			(sender as ToggleButton).IsEnabled = true;
 			Waiting();
 		}
 
@@ -138,12 +151,14 @@ namespace SJCAM.Custom
 			if (locked)
 				return;
 			Waiting();
+			(sender as ToggleButton).IsEnabled = false;
 			string par;
 			if (ToggleAudio.IsChecked == true)
 				par = "1";
 			else
 				par = "0";
 			string result = await action.GetRequestAsync("2007", par);
+			(sender as ToggleButton).IsEnabled = true;
 			Waiting();
 		}
 
@@ -152,12 +167,14 @@ namespace SJCAM.Custom
 			if (locked)
 				return;
 			Waiting();
+			(sender as ToggleButton).IsEnabled = false;
 			string par;
 			if (ToggleWDR.IsChecked == true)
 				par = "1";
 			else
 				par = "0";
 			string result = await action.GetRequestAsync("2004", par);
+			(sender as ToggleButton).IsEnabled = true;
 			Waiting();
 		}
 
@@ -166,8 +183,10 @@ namespace SJCAM.Custom
 			if (locked)
 				return;
 			Waiting();
+			(sender as ComboBox).IsEnabled = false;
 			string par =ComboExposure.SelectedIndex.ToString();
 			string result = await action.GetRequestAsync("2005", par);
+			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}
 
@@ -176,8 +195,10 @@ namespace SJCAM.Custom
 			if (locked)
 				return;
 			Waiting();
+			(sender as ComboBox).IsEnabled = false;
 			string par = ComboWhiteBalance.SelectedIndex.ToString();
 			string result = await action.GetRequestAsync("1007", par);
+			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}
 
@@ -186,8 +207,10 @@ namespace SJCAM.Custom
 			if (locked)
 				return;
 			Waiting();
+			(sender as ComboBox).IsEnabled = false;
 			string par = ComboPhotoLapseInterval.SelectedIndex.ToString();
 			string result = await action.GetRequestAsync("1012", par);
+			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}
 
@@ -196,8 +219,10 @@ namespace SJCAM.Custom
 			if (locked)
 				return;
 			Waiting();
+			(sender as ComboBox).IsEnabled = false;
 			string par = ComboVideoLapseInterval.SelectedIndex.ToString();
 			string result = await action.GetRequestAsync("2019", par);
+			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}
 
@@ -206,8 +231,10 @@ namespace SJCAM.Custom
 			if (locked)
 				return;
 			Waiting();
+			(sender as ComboBox).IsEnabled = false;
 			string par = ComboAutoPowerOff.SelectedIndex.ToString();
 			string result = await action.GetRequestAsync("3007", par);
+			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}
 	}

@@ -27,6 +27,9 @@ namespace SJCAM.Logic
 
 		public async Task<string> GetRequestAsync(string cmdNumber, string param = "")
 		{
+			if (ConnectionStatus.IsConnected != true)
+				return null;
+
 			string tmp = BuildRequestAsync(cmdNumber, param);
 			HttpClient client = new HttpClient();
 			try

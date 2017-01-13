@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SJCAM.Logic;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -32,7 +33,14 @@ namespace SJCAM.Custom
 			};
 			action = new Logic.Action();
 			this.InitializeComponent();
-			CheckSettings();
+			if (ConnectionStatus.IsConnected == true)
+			{
+				CheckSettings();
+			}
+			else
+			{
+				SnapButton.IsEnabled = false;
+			}
 		}
 
 		private async void CheckSettings()
@@ -61,7 +69,9 @@ namespace SJCAM.Custom
 		private async void Button_ClickAsync(object sender, RoutedEventArgs e)
 		{
 			Waiting();
+			(sender as Button).IsEnabled = false;
 			string msg = await action.GetRequestAsync("1001");
+			(sender as Button).IsEnabled = true;
 			Waiting();
 		}
 
@@ -69,7 +79,9 @@ namespace SJCAM.Custom
 		{
 			int selected = ResolutionCombo.SelectedIndex;
 			Waiting();
+			(sender as ComboBox).IsEnabled = false;
 			string msg = await action.GetRequestAsync("1002", selected.ToString());
+			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}
 		private void Waiting()

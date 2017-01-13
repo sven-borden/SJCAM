@@ -42,10 +42,7 @@
 				<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="{x:Bind Description}" />
 				<ScrollViewer VerticalScrollMode="Enabled" IsEnabled="True" IsVerticalScrollChainingEnabled="True" IsVerticalRailEnabled="True" Height="{Binding ElementName=MainStack, Path=ActualHeight}">
 					<StackPanel Name="CanvasPlace">
-						<TextBox PlaceholderText="Enter Cmd" Name="Cmd" />
-						<TextBox PlaceholderText="Enter Param" Name="Param"/>
-						<Button Content="Test" Click="Button_Click" />
-						<TextBlock Text="" Name="TestBox"/>
+
 					</StackPanel>
 				</ScrollViewer>
 			</StackPanel>

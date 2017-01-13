@@ -14,7 +14,7 @@ namespace SJCAM.Logic
 {
 	static class ConnectionStatus
 	{
-
+		public static bool IsConnected { get; private set; }
 		public static Task WiFiConnectionKind { get; private set; }
 
 		/// <summary>
@@ -41,6 +41,7 @@ namespace SJCAM.Logic
 
 		public async static Task<bool> WifiNameAsync(ProgressBar bar)
 		{
+			IsConnected = false;
 			try
 			{
 				bar.IsIndeterminate = false;
@@ -93,7 +94,8 @@ namespace SJCAM.Logic
 						else
 						{
 							bar.Value = bar.Maximum;
-							return true;
+							IsConnected = true;
+							return IsConnected;
 						}
 					}
 				}

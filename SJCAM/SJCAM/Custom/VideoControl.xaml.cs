@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SJCAM.Logic;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -36,9 +37,17 @@ namespace SJCAM.Custom
 
 			action = new Logic.Action();
 			this.InitializeComponent();
-			CheckIsRecording();
-			CheckSettings();
-			UpdateTimeRemain();
+			if (ConnectionStatus.IsConnected == true)
+			{
+				CheckIsRecording();
+				CheckSettings();
+				UpdateTimeRemain();
+			}
+			else
+			{
+				SnapButton.IsEnabled = false;
+			}
+			
 		}
 
 		private async void CheckSettings()
@@ -93,6 +102,7 @@ namespace SJCAM.Custom
 		private async void Button_ClickAsync(object sender, RoutedEventArgs e)
 		{
 			Waiting();
+			(sender as Button).IsEnabled = false;
 			if (isRecording)
 			{
 				string msg = await action.GetRequestAsync("2001", "0");
@@ -105,15 +115,18 @@ namespace SJCAM.Custom
 				SnapButton.Content = "Stop";
 				isRecording = !isRecording;
 			}
+			(sender as Button).IsEnabled = true;
 			Waiting();
 		}
 
 		private async void ResolutionCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			int selected = ResolutionCombo.SelectedIndex;
+			(sender as ComboBox).IsEnabled = false;
 			Waiting();
 			string msg = await action.GetRequestAsync("2002", selected.ToString());
 			UpdateTimeRemain();
+			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}
 		private void Waiting()

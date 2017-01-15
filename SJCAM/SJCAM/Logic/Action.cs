@@ -11,7 +11,11 @@ namespace SJCAM.Logic
 	public class Action
 	{
 		private const string baseURL = "http://192.168.1.254";
+		private const string basePhotoURL = "http://192.168.1.254/DCIM/PHOTO";
+		private const string baseVideoURL = "http://192.168.1.254/DCIM/MOVIE";
+
 		bool DEBUG = false;
+
 		public Action()
 		{
 

@@ -22,9 +22,18 @@ namespace SJCAM.Custom
 	public sealed partial class FilesControl : UserControl
 	{
 		Logic.Action action;
+		List<string> NamePhotoList;
+		List<string> NameVideoList;
+		public ObservableCollection<string> Photo;
+		public ObservableCollection<string> Video;
+
 		public FilesControl()
 		{
 			action = new Logic.Action();
+			NamePhotoList = new List<string>();
+			NameVideoList = new List<string>();
+			Photo = new ObservableCollection<string>();
+			Video = new ObservableCollection<string>();
 			this.InitializeComponent();
 			Setup();
 		}
@@ -34,12 +43,35 @@ namespace SJCAM.Custom
 			try
 			{
 				string s = await action.GetRequestAsync("3015"); Debug.WriteLine(s);
-				await action.FileRequestAsync(@"\DCIM\Movie\2016_1230_155824_001.MP4");
+				ParseXML(s);
+				UpdateXAML();
 			}
 			catch (Exception ex)
 			{
 				Debug.WriteLine(ex.ToString());
 			};
+		}
+
+		private void UpdateXAML()
+		{
+			foreach (string item in NamePhotoList)
+				Photo.Add("http://192.168.1.254/DCIM/PHOTO/"+item);
+			this.Bindings.Update();
+			Debug.WriteLine("Items : " + NamePhotoList.Count);
+		}
+
+		private void ParseXML(string input)
+		{
+			string[] _input = input.Split(new string[] { "<NAME>", "</NAME>" }, StringSplitOptions.RemoveEmptyEntries);
+			foreach (string item in _input)
+			{
+				if (item.Contains("SIZE"))
+					continue;
+				if (item.Contains(".JPG"))
+					NamePhotoList.Add(item);
+				if (item.Contains(".MP4"))
+					NameVideoList.Add(item);
+			}				
 		}
 	}
 }

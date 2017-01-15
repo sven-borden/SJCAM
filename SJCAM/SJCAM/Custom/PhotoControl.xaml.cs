@@ -55,8 +55,15 @@ namespace SJCAM.Custom
 				Debug.WriteLine(Cmd[i]);
 				if (Cmd[i].Contains("1002"))
 				{
-					ResolutionCombo.SelectedIndex = Convert.ToInt32(Status[i]);
-					return;
+					try
+					{
+						ResolutionCombo.SelectedIndex = Convert.ToInt32(Status[i]);
+						return;
+					}
+					catch(IndexOutOfRangeException outOfRange)
+					{
+						Debug.WriteLine(outOfRange.Message);
+					}
 				}
 			}
 		}

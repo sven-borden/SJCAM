@@ -20,6 +20,7 @@ using SJCAM.Style;
 using System.Collections.ObjectModel;
 using SJCAM.Logic.Settings;
 using System.Threading.Tasks;
+using SJCAM.Logic.Wifi;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace SJCAM
@@ -34,6 +35,7 @@ namespace SJCAM
 		public string ConnectionStatusText = string.Empty;
 		public Visibility connectionBarVisibility;
 		private Logic.Action action;
+		public ObservableCollection<WifiSpot> ListAvailableWifi;
 
         public MainPage()
         {
@@ -42,10 +44,22 @@ namespace SJCAM
 			ConnectionStatusText = "Try connecting";
 			connectionBarVisibility = Visibility.Collapsed;
 			action = new Logic.Action();
+			ListAvailableWifi = new ObservableCollection<WifiSpot>();
+			RetreiveWifi();
             this.InitializeComponent();
 
 			CheckConnection();
         }
+
+		private async void RetreiveWifi()
+		{
+			List<WifiSpot> tmp = await ConnectionStatus.GetAvailableNetwork();
+			ListAvailableWifi.Clear();
+			foreach (WifiSpot t in tmp)
+				if(!ListAvailableWifi.Contains(t))
+					ListAvailableWifi.Add(t);
+			this.Bindings.Update();
+		}
 
 		private async void CheckConnection()
 		{
@@ -57,12 +71,22 @@ namespace SJCAM
 			{
 				ConnectionStatusText = "Not Connected";
 				ConnectStatusProgressBar.IsIndeterminate = true;
+				ShowPopup();
 			}
 			this.Bindings.Update();
 			ConnectStatusBar.Background = AppColor.GetConnectionColor(_conn);
 			DispatcherTimer coverOut = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 2) };
 			coverOut.Tick += (t, e) => { connectionBarVisibility = Visibility.Collapsed; ConnectStatusBar.Visibility = connectionBarVisibility; (t as DispatcherTimer).Stop(); }; 
 			coverOut.Start();
+		}
+
+		private void ShowPopup()
+		{
+			PopupStack.MaxWidth = this.ActualWidth - 100;
+			PopupStack.MaxHeight = this.ActualHeight - 100;
+			WifiPopup.VerticalOffset = 50;
+			WifiPopup.HorizontalOffset = 50;
+			WifiPopup.IsOpen = true;
 		}
 
 		private async void Image_Loaded(object sender, RoutedEventArgs e)
@@ -73,7 +97,7 @@ namespace SJCAM
 		private async void PhotoButton_ClickAsync(object sender, RoutedEventArgs e)
 		{
 			Title = "Photo";
-			Bindings.Update();
+			this.Bindings.Update();
 			CanvasPlace.Children.Clear();
 			CanvasPlace.Children.Add(new PhotoControl());
 			try
@@ -85,7 +109,7 @@ namespace SJCAM
 		private async void VideoButton_ClickAsync(object sender, RoutedEventArgs e)
 		{
 			Title = "Video";
-			Bindings.Update();
+			this.Bindings.Update();
 			CanvasPlace.Children.Clear();
 			CanvasPlace.Children.Add(new VideoControl());
 			try
@@ -94,12 +118,61 @@ namespace SJCAM
 			{ };
 		}
 
-		private async void OtherButton_ClickAsync(object sender, RoutedEventArgs e)
+		private void OtherButton_ClickAsync(object sender, RoutedEventArgs e)
 		{
-			Bindings.Update();
 			Title = "Settings";
+			this.Bindings.Update();
 			CanvasPlace.Children.Clear();
 			CanvasPlace.Children.Add(new SettingsControls());
+		}
+
+
+		private async void FileButton_ClickAsync(object sender, RoutedEventArgs e)
+		{
+			Title = "Files"; Description = "Here is SJCAM files";
+			this.Bindings.Update();
+			CanvasPlace.Children.Clear();
+			CanvasPlace.Children.Add(new FilesControl());
+		}
+
+		private async void ValidateWifiButton_Click(object sender, RoutedEventArgs e)
+		{
+			PopupRing.Visibility = Visibility.Visible;
+			WifiSpot spot = ListAvailableWifi[WifiListView.SelectedIndex];
+			ConnectStatusProgressBar.Visibility = Visibility.Visible;
+			ConnectionStatusText = "Try connecting : " + spot.SSID;
+			this.Bindings.Update();
+			bool connection = await ConnectionStatus.WifiNameAsync(ConnectStatusProgressBar, spot.SSID);
+			ConnectStatusBar.Background = AppColor.GetConnectionColor(connection);
+			DispatcherTimer coverOut = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 2) };
+			coverOut.Tick += (t, ex) => { connectionBarVisibility = Visibility.Collapsed; ConnectStatusBar.Visibility = connectionBarVisibility; (t as DispatcherTimer).Stop(); };
+			coverOut.Start();
+			PopupRing.Visibility = Visibility.Collapsed;
+			if (connection)
+			{
+				WifiPopup.IsOpen = false;
+			}
+			else
+				WifiPopup.IsOpen = true;
+		}
+
+		private void CancelButton_Click(object sender, RoutedEventArgs e)
+		{
+			ValidateWifiButton.IsEnabled = false;
+			WifiPopup.IsOpen = false;
+			PopupRing.Visibility = Visibility.Collapsed;
+		}
+
+		private void WifiListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ValidateWifiButton.IsEnabled = true;
+		}
+
+		private void RefreshButton_Click(object sender, RoutedEventArgs e)
+		{
+			PopupRing.Visibility = Visibility.Visible;
+			RetreiveWifi();
+			PopupRing.Visibility = Visibility.Collapsed;
 		}
 	}
 }

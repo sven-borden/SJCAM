@@ -40,6 +40,11 @@
 				<TextBlock Style="{StaticResource GridSettingTextBlock}" Text="Auto power off"/>
 				<ComboBox Name="ComboAutoPowerOff" Margin="20,0,20,20" HorizontalAlignment="Stretch" PlaceholderText="Auto power off"  SelectionChanged="ComboAutoPowerOff_SelectionChanged" ItemsSource="{x:Bind AutoPower}"/>
 
+				<TextBlock Text="DANGER ZONE" Style="{StaticResource DescriptionTextBlock}" />
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Button Name="DisconnectButton" Foreground="WhiteSmoke" Content="Disconnect" Margin="10" Click="DisconnectButton_Click"/>
+					<Button Name="FormatButton" Foreground="WhiteSmoke" Content="Format SD" Margin="10" Click="FormatButton_Click"/>
+				</StackPanel>
 			</StackPanel>
 		</ScrollViewer>
 		<ProgressRing x:Name="Ring" IsActive="True" Width="200" Height="200" Visibility="Collapsed"/>

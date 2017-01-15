@@ -1,0 +1,22 @@
+﻿<UserControl
+    x:Class="SJCAM.Custom.FilesControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SJCAM.Custom"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+		<ScrollViewer VerticalScrollMode="Enabled" IsEnabled="True" IsVerticalScrollChainingEnabled="True" IsVerticalRailEnabled="True">
+			<StackPanel>
+				<StackPanel.ChildrenTransitions>
+					<TransitionCollection>
+						<EdgeUIThemeTransition Edge="Top"/>
+					</TransitionCollection>
+				</StackPanel.ChildrenTransitions>
+				
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

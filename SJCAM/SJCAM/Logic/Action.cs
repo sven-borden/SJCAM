@@ -25,6 +25,26 @@ namespace SJCAM.Logic
 			return tmp;
 		}
 
+		public async Task<string> FileRequestAsync(string FileName)
+		{
+			if (ConnectionStatus.IsConnected != true)
+				return null;
+
+			string tmp = baseURL + FileName;
+			HttpClient client = new HttpClient();
+			try
+			{
+				string msg = await client.GetStringAsync(tmp);
+				Debug.WriteLineIf(DEBUG, msg);
+				return msg;
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine("[FILE REQUEST]: get error to get file");
+				return null;
+			}
+		}
+
 		public async Task<string> GetRequestAsync(string cmdNumber, string param = "")
 		{
 			if (ConnectionStatus.IsConnected != true)

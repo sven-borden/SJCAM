@@ -5,12 +5,49 @@
     xmlns:local="using:SJCAM"
 	xmlns:Set="using:SJCAM.Logic.Settings"
 	xmlns:Controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	xmlns:wifi="using:SJCAM.Logic.Wifi"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d">
 
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<Image Source="background.jpg" Stretch="UniformToFill" HorizontalAlignment="Center" Loaded="Image_Loaded"/>
+		<Popup Name="WifiPopup" IsOpen="False">
+			<Popup.Transitions>
+				<TransitionCollection>
+					<PopupThemeTransition />
+				</TransitionCollection>
+			</Popup.Transitions>
+			<Border BorderBrush="DeepSkyBlue" Background="{StaticResource ApplicationPageBackgroundThemeBrush}" BorderThickness="1">
+				<Grid Background="#44444444" Name="PopupGrid">
+					<StackPanel Name="PopupStack">
+						<TextBlock Style="{StaticResource PopupTitleTextBlock}" Text="Select a camera" />
+						<TextBlock Style="{StaticResource DescriptionTextBlock}" Foreground="Gray" Text="We wasn't able to automaticaly connect to your SJCAM action camera, choose the wifi below"/>
+						
+						<ListView Name="WifiListView" ItemsSource="{x:Bind ListAvailableWifi}" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.IsVerticalRailEnabled="True" Height="500" SelectionChanged="WifiListView_SelectionChanged">
+							<ListView.ItemTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<TextBlock Text="{Binding SSID}"/>
+									</StackPanel>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<Button Grid.Column="0" IsEnabled="False" Name="ValidateWifiButton" Style="{StaticResource WifiButton}" Content="Ok" Click="ValidateWifiButton_Click"/>
+							<Button Grid.Column="1" Name="CancelButton" Style="{StaticResource WifiButton}" Content="Cancel" Click="CancelButton_Click"/>
+							<Button Grid.Column="2" Name="RefreshButton" FontFamily="Segoe MDL2 Assets" Foreground="WhiteSmoke" Click="RefreshButton_Click" Content="&#xE117;" />
+						</Grid>
+					</StackPanel>
+					<ProgressRing Name="PopupRing" IsActive="True" Visibility="Collapsed" Width="200" Height="200"/>
+				</Grid>
+			</Border>
+		</Popup>
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -53,13 +90,19 @@
 					<ColumnDefinition />
 					<ColumnDefinition />
 					<ColumnDefinition />
+					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 
-				<Button Style="{StaticResource MenuButton}" Name="PhotoButton" Content="&#xE114;" Click="PhotoButton_ClickAsync" Grid.Column="0" />
+				<Button Style="{StaticResource MenuButton}" Name="PhotoButton" Content="&#xE114;" Click="PhotoButton_ClickAsync" Grid.Column="0">
+				</Button>
 				<Button Style="{StaticResource MenuButton}" Name="VideoButton" Content="&#xE116;" Click="VideoButton_ClickAsync" Grid.Column="1" />
 				<Button Style="{StaticResource MenuButton}" Name="OtherButton" Content="&#xE115;" Click="OtherButton_ClickAsync" Grid.Column="2"/>
+				<Button Style="{StaticResource MenuButton}" Name="FileButton" Content="&#xEC50;" Click="FileButton_ClickAsync" Grid.Column="3" />
 			</Grid>
 		</Grid>
 	</Grid>
+	<Page.Resources>
+		<wifi:StrenghToString x:Key="StrengthToStringKey" />
+	</Page.Resources>
 </Page>
 	

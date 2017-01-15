@@ -237,5 +237,23 @@ namespace SJCAM.Custom
 			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}
+
+		private async void DisconnectButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (locked)
+				return;
+			Waiting();
+			await action.GetRequestAsync("3013");
+			Waiting();
+		}
+
+		private async void FormatButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (locked)
+				return;
+			Waiting();
+			await action.GetRequestAsync("3010", "1");
+			Waiting();
+		}
 	}
 }

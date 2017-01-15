@@ -99,6 +99,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Custom\FilesControl.xaml.cs">
+      <DependentUpon>FilesControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Custom\MultipleOptionControl.xaml.cs">
       <DependentUpon>MultipleOptionControl.xaml</DependentUpon>
     </Compile>
@@ -116,6 +119,8 @@
     <Compile Include="Logic\Settings\MultipleOptionsSetting.cs" />
     <Compile Include="Logic\Settings\Setting.cs" />
     <Compile Include="Logic\Settings\ToggleSetting.cs" />
+    <Compile Include="Logic\Wifi\StrenghToString.Converter.cs" />
+    <Compile Include="Logic\Wifi\WifiSpot.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -185,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Custom\FilesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Custom\MultipleOptionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

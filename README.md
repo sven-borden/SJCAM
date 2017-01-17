@@ -14,7 +14,9 @@ As I owned a SJCAM action camera recently (M20), I started to write an Universal
 - Access to camera storage through network, and be able to retrieve photos and videos
 - Sexy design (Important!)
 - No ads
+
 ## Commands
+
 Everything is based on GET Request to the camera, which has a Base URL on http://192.168.1.254/
 Get request is build such as http://192.168.1.254/?custom=1&cmd={COMMAND}&par={PARAM}
 

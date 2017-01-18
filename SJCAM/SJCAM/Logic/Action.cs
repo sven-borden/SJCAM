@@ -13,7 +13,9 @@ namespace SJCAM.Logic
 		private const string baseURL = "http://192.168.1.254";
 		private const string basePhotoURL = "http://192.168.1.254/DCIM/PHOTO";
 		private const string baseVideoURL = "http://192.168.1.254/DCIM/MOVIE";
-
+		private const string LiveFeedURL = "rtsp://192.168.1.254/sjcam.mp4";
+		public string LiveFeed { get { return LiveFeedURL; } }
+	
 		bool DEBUG = false;
 
 		public Action()

@@ -4,25 +4,33 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SJCAM.Custom"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:vlc="using:VLC"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
 	<Grid>
-		<ScrollViewer VerticalScrollMode="Enabled" IsEnabled="True" IsVerticalScrollChainingEnabled="True" IsVerticalRailEnabled="True" Height="{Binding ElementName=MainStack, Path=ActualHeight}">
-			<StackPanel>
-				<StackPanel.ChildrenTransitions>
-					<TransitionCollection>
-						<EdgeUIThemeTransition Edge="top" />
-					</TransitionCollection>
-				</StackPanel.ChildrenTransitions>
-				<ComboBox Name="ResolutionCombo" HorizontalAlignment="Center" Margin="20" PlaceholderText="Resolution" ItemsSource="{x:Bind ResolutionString}" SelectionChanged="ResolutionCombo_SelectionChanged">
+		<Border BorderThickness="5">
+			<ScrollViewer VerticalScrollMode="Enabled" IsEnabled="True" IsVerticalScrollChainingEnabled="True" IsVerticalRailEnabled="True" Height="{Binding ElementName=MainStack, Path=ActualHeight}">
+				<StackPanel VerticalAlignment="Stretch">
+					<StackPanel.ChildrenTransitions>
+						<TransitionCollection>
+							<EdgeUIThemeTransition Edge="top" />
+						</TransitionCollection>
+					</StackPanel.ChildrenTransitions>
+					<ComboBox Name="ResolutionCombo" HorizontalAlignment="Center" Margin="20" PlaceholderText="Resolution" ItemsSource="{x:Bind ResolutionString}" SelectionChanged="ResolutionCombo_SelectionChanged">
 
-				</ComboBox>
-				<ProgressRing Width="100" Height="100" Visibility="Collapsed" Name="Ring" IsActive="True" Foreground="WhiteSmoke"/>
-				<TextBlock Style="{StaticResource DescriptionTextBlock}" Name="Remain" Text="{x:Bind RemainingTime, Mode=TwoWay}"/>
-				<Button Style="{StaticResource StdButton}" Content="Start" Click="Button_ClickAsync" Name="SnapButton"/>
-				<MediaElement Source="rtsp://192.168.1.254/sjcam.mp4" AutoPlay="True" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="200" MinWidth="350"/>
-			</StackPanel>
-		</ScrollViewer>
+					</ComboBox>
+					<ProgressRing Width="100" Height="100" Visibility="Collapsed" Name="Ring" IsActive="True" Foreground="WhiteSmoke"/>
+					<TextBlock Style="{StaticResource DescriptionTextBlock}" Name="Remain" Text="{x:Bind RemainingTime, Mode=TwoWay}"/>
+					<Button Style="{StaticResource StdButton}" Content="Start" Click="Button_ClickAsync" Name="SnapButton"/>
+					<vlc:MediaElement Name="Player" AreTransportControlsEnabled="True" HardwareAcceleration="True" VerticalAlignment="Stretch"
+                  Source="http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi">
+						<vlc:MediaElement.TransportControls>
+							<vlc:MediaTransportControls ControlPanelOpacity="0.8" AutoHide="True" CursorAutoHide="True"/>
+						</vlc:MediaElement.TransportControls>
+					</vlc:MediaElement>
+				</StackPanel>
+			</ScrollViewer>
+		</Border>
 	</Grid>
 </UserControl>

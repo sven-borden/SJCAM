@@ -28,6 +28,11 @@ namespace SJCAM.Custom
 		bool isRecording = false;
 		public string RemainingTime { get; set; }
 
+		protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+		{
+			Player.Stop();
+		}
+
 		public VideoControl()
 		{
 			ResolutionString = new List<string>()
@@ -47,7 +52,15 @@ namespace SJCAM.Custom
 			{
 				SnapButton.IsEnabled = false;
 			}
-			
+			this.Loaded += (e, r) =>
+			{
+				Player.Width = this.ActualWidth - 40;
+				Player.Height = Player.Width / 16 * 9;
+				if(ConnectionStatus.IsConnected)
+					Player.Source = new Uri(action.LiveFeed);
+				Player.AutoPlay = false;
+				Player.HardwareAcceleration = false;
+			};	
 		}
 
 		private async void CheckSettings()

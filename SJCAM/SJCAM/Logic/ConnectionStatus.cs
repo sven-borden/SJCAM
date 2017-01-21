@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.WiFi;
+using Windows.Networking.Connectivity;
 using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
 
@@ -78,13 +79,19 @@ namespace SJCAM.Logic
 							ispresent = true;
 
 					if (!ispresent)
-						list.Add(new WifiSpot()
-						{
-							MAC = network.Bssid,
-							SignalStrength = network.ChannelCenterFrequencyInKilohertz,
-							SignalBar = network.SignalBars,
-							SSID = network.Ssid
-						});
+					{
+						WifiSpot wifi = new WifiSpot();
+						wifi.MAC = network.Bssid;
+						wifi.SignalStrength = network.ChannelCenterFrequencyInKilohertz;
+						wifi.SignalBar = network.SignalBars;
+						wifi.SSID = network.Ssid;
+
+						if (network.SecuritySettings.NetworkAuthenticationType != NetworkAuthenticationType.Open80211)
+							wifi.PswNeeded = false;
+						else
+							wifi.PswNeeded = true;
+					}
+
 				}
 			}
 			catch (Exception e)
@@ -95,9 +102,16 @@ namespace SJCAM.Logic
 			return list;
 		}
 
-		public async static Task<bool> WifiNameAsync(ProgressBar bar, string WifiName = "M20")
+		public async static Task<bool> WifiNameAsync(ProgressBar bar, WifiSpot wifi = null)
 		{
 			IsConnected = false;
+			if (wifi == null)
+			{
+				wifi = new WifiSpot();
+				wifi.PswNeeded = true;
+				wifi.SSID = "M20";
+				wifi.Psw = "12345678";
+			}
 			try
 			{
 				bar.IsIndeterminate = false;
@@ -137,13 +151,26 @@ namespace SJCAM.Logic
 
 				foreach (var network in report.AvailableNetworks)
 				{
-
-
-					if (network.Ssid.Contains(WifiName))
+					if (network.Ssid.Contains(wifi.SSID))
 					{
 						bar.Value += 3;
-						//PasswordCredential pass = new PasswordCredential(null, null, "12345678");
-						var connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Manual);
+
+						WiFiConnectionResult connectionResult = null;
+						if (wifi.PswNeeded)
+						{
+							try
+							{
+								PasswordCredential pass = new PasswordCredential();
+								pass.Password = wifi.Psw;
+								connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Manual, pass);
+							}
+							catch(Exception e)
+							{
+
+							}
+						}
+						else
+							connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Manual);
 
 						if (connectionResult.ConnectionStatus != WiFiConnectionStatus.Success)
 							return false;
@@ -155,6 +182,7 @@ namespace SJCAM.Logic
 						}
 					}
 				}
+				
 				return false;
 			}
 			catch(Exception e)

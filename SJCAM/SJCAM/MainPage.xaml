@@ -48,6 +48,21 @@
 				</Grid>
 			</Border>
 		</Popup>
+		<Popup Name="PasswordPopup" IsOpen="False" Width="100" Height="50">
+			<Popup.Transitions>
+				<TransitionCollection>
+					<PopupThemeTransition />
+				</TransitionCollection>
+			</Popup.Transitions>
+			<Border BorderBrush="DeepSkyBlue" Background="{StaticResource ApplicationPageBackgroundThemeBrush}" BorderThickness="1">
+				<Grid Background="#44444444" Name="PopupPswGrid">
+					<StackPanel Name="PopupPswStack">
+						<TextBox PlaceholderText="Password required" TextChanged="TextBox_TextChanged"/>
+						<Button Name="ValidatePassword" Click="ValidatePassword_Click" Content="Validate" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</Popup>
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />

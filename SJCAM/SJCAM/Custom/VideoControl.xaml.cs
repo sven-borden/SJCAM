@@ -28,11 +28,6 @@ namespace SJCAM.Custom
 		bool isRecording = false;
 		public string RemainingTime { get; set; }
 
-		protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-		{
-			Player.Stop();
-		}
-
 		public VideoControl()
 		{
 			ResolutionString = new List<string>()

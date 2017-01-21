@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using SJCAM.Logic.Settings;
 using System.Threading.Tasks;
 using SJCAM.Logic.Wifi;
+using Windows.Networking.Connectivity;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace SJCAM
@@ -36,6 +37,7 @@ namespace SJCAM
 		public Visibility connectionBarVisibility;
 		private Logic.Action action;
 		public ObservableCollection<WifiSpot> ListAvailableWifi;
+		private string Password = string.Empty;
 
         public MainPage()
         {
@@ -49,7 +51,13 @@ namespace SJCAM
             this.InitializeComponent();
 
 			CheckConnection();
-        }
+			NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
+		}
+
+		private void NetworkInformation_NetworkStatusChanged(object sender)
+		{
+			
+		}
 
 		private async void RetreiveWifi()
 		{
@@ -142,7 +150,7 @@ namespace SJCAM
 			ConnectStatusProgressBar.Visibility = Visibility.Visible;
 			ConnectionStatusText = "Try connecting : " + spot.SSID;
 			this.Bindings.Update();
-			bool connection = await ConnectionStatus.WifiNameAsync(ConnectStatusProgressBar, spot.SSID);
+			bool connection = await ConnectionStatus.WifiNameAsync(ConnectStatusProgressBar, WifiListView.SelectedItem as WifiSpot);
 			ConnectStatusBar.Background = AppColor.GetConnectionColor(connection);
 			DispatcherTimer coverOut = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 2) };
 			coverOut.Tick += (t, ex) => { connectionBarVisibility = Visibility.Collapsed; ConnectStatusBar.Visibility = connectionBarVisibility; (t as DispatcherTimer).Stop(); };
@@ -165,6 +173,9 @@ namespace SJCAM
 
 		private void WifiListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			WifiSpot wifi = WifiListView.SelectedItem as WifiSpot;
+			if (wifi.PswNeeded)
+				PasswordPopup.IsOpen = true;
 			ValidateWifiButton.IsEnabled = true;
 		}
 
@@ -173,6 +184,16 @@ namespace SJCAM
 			PopupRing.Visibility = Visibility.Visible;
 			RetreiveWifi();
 			PopupRing.Visibility = Visibility.Collapsed;
+		}
+
+		private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			Password = (sender as TextBox).Text;
+		}
+
+		private void ValidatePassword_Click(object sender, RoutedEventArgs e)
+		{
+			PasswordPopup.IsOpen = false;
 		}
 	}
 }

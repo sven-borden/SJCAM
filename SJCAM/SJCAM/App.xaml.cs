@@ -64,10 +64,21 @@ namespace SJCAM
             {
                 if (rootFrame.Content == null)
                 {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+					// When the navigation stack isn't restored navigate to the first page,
+					// configuring the new page by passing required information as a navigation
+					// parameter
+					Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+					Object o = localSettings.Values["AlreadyBoot"];
+					if(o == null)
+					{
+						//First boot
+						localSettings.Values["AlreadyBoot"] = 1;
+						rootFrame.Navigate(typeof(Pages.CameraChoose), e.Arguments);
+					}
+					else
+					{
+						rootFrame.Navigate(typeof(Pages.CameraChoose), e.Arguments);
+					}
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

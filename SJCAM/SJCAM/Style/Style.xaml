@@ -8,12 +8,13 @@
 	
 	<!--TextBlock-->
 	<Style x:Key="TitleTextBlock" TargetType="TextBlock">
-		<Setter Property="FontSize" Value="40"/>
+		<Setter Property="FontSize" Value="40,0,40,0"/>
 		<Setter Property="Foreground" Value="WhiteSmoke" />
 		<Setter Property="HorizontalAlignment" Value="Center" />
 		<Setter Property="VerticalAlignment" Value="Center" />
 		<Setter Property="Margin" Value="20,20,20,0" />
 		<Setter Property="TextWrapping" Value="Wrap" />
+		<Setter Property="TextAlignment" Value="Center" />
 	</Style>
 	<Style x:Key="PopupTitleTextBlock" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlock}">
 		<Setter Property="FontSize" Value="35" />

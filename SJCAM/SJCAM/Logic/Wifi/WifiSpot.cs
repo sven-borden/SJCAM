@@ -12,7 +12,8 @@ namespace SJCAM.Logic.Wifi
 		public double SignalStrength { get; set; }
 		public byte SignalBar { get; set; }
 		public string SSID { get; set; }
-
+		public bool PswNeeded { get; set; }
+		public string Psw { get; set; }
 		public WifiSpot()
 		{
 

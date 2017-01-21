@@ -1,4 +1,6 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Animations;
+using SJCAM.Logic;
+using SJCAM.Logic.Wifi;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,13 +27,23 @@ namespace SJCAM.Pages
 	public sealed partial class ConnectionPage : Page
 	{
 		ApplicationView currentView;
-
+		public ObservableCollection<WifiSpot> ListAvailableNetwork;
 		public ConnectionPage()
 		{
+			ListAvailableNetwork = new ObservableCollection<WifiSpot>();
 			this.InitializeComponent();
 			currentView = ApplicationView.GetForCurrentView();
 			Window.Current.SizeChanged += Current_SizeChanged;
 			Background.Blur(8f, 1000, 200).Start();
+			WIFI();
+		}
+
+		private async void WIFI()
+		{
+			PopupRing.IsEnabled = true;
+			PopupRing.Visibility = Visibility.Visible;
+			await ListAvailableNetwork = ConnectionStatus.GetAvailableNetwork();
+			PopupRing.Visibility = Visibility.Collapsed;
 		}
 
 		private async void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)

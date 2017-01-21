@@ -40,9 +40,9 @@ namespace SJCAM.Logic
 			return false;
 		}
 
-		public async static Task<List<WifiSpot>> GetAvailableNetwork()
+		public async static Task<ObservableCollection<WifiSpot>> GetAvailableNetwork()
 		{
-			List<WifiSpot> list = new List<WifiSpot>();
+			ObservableCollection<WifiSpot> list = new List<WifiSpot>();
 			try
 			{
 				var access = await WiFiAdapter.RequestAccessAsync();

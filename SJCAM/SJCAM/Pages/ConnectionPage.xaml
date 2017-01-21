@@ -9,5 +9,9 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<Image Name="Background" Source="ms-appx:///Images/bg-colored.jpg" Stretch="UniformToFill"/>
+		<StackPanel Name="MainStack">
+			<TextBlock Style="{StaticResource TitleTextBlock}" Text="Connect to camera" />
+
+		</StackPanel>
 	</Grid>
 </Page>

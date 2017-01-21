@@ -31,7 +31,7 @@ namespace SJCAM.Pages
 			this.InitializeComponent();
 			currentView = ApplicationView.GetForCurrentView();
 			Window.Current.SizeChanged += Current_SizeChanged;
-			Background.Blur(5f, 1000, 200).Start();
+			Background.Blur(8f, 1000, 200).Start();
 		}
 
 		private async void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)

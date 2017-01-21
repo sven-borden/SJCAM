@@ -32,9 +32,21 @@ namespace SJCAM.Pages
 		{
 			InitSources();
 			this.InitializeComponent();
+			MainStack.Fade(0, 0, 0).Start();
 			currentView = ApplicationView.GetForCurrentView();
 			Window.Current.SizeChanged += Current_SizeChanged;
-			Background.Blur(5f, 1000, 1000).Start();
+
+			Animate();
+		}
+
+		private async void Animate()
+		{
+			Background.Blur(8f, 1000, 1000).Start();
+			foreach (var item in MainStack.Children)
+				item.Fade(0, 0, 0).Start();
+			MainStack.Fade(1, 1, 1).Start();
+			foreach (var item in MainStack.Children)
+				await item.Fade(1, 800, 0).StartAsync();
 		}
 
 		private void InitSources()
@@ -94,8 +106,10 @@ namespace SJCAM.Pages
 			StartupModel model = (sender as GridView).SelectedItem as StartupModel;
 			Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 			localSettings.Values["CameraModel"] = model.Description;
-			await (sender as GridView).Fade(0, 400, 0).Offset(0, 50, 400, 0).StartAsync();
-			await Background.Blur(0, 500, 0).StartAsync();
+			//			await (sender as GridView).Fade(0, 400, 0).Offset(0, 50, 400, 0).StartAsync();
+			foreach (var item in MainStack.Children)
+				await item.Fade(0, 500, 0).StartAsync();
+			await Background.Blur(0, 200, 0).StartAsync();
 			Frame.Navigate(typeof(ConnectionPage));
 		}
 	}

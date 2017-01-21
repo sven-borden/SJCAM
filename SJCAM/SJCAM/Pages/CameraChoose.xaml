@@ -10,7 +10,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<Image x:Name="Background" Source="ms-appx:///Images/bg-colored.jpg" Stretch="UniformToFill" />
-		<StackPanel>
+		<StackPanel Name="MainStack">
 			<TextBlock Text="Welcome to SJCAM" Style="{StaticResource TitleTextBlock}"/>
 			<TextBlock Text="Please choose your Action camera" Style="{StaticResource DescriptionTextBlock}"/>
 			<GridView HorizontalAlignment="Center" SelectionChanged="GridView_SelectionChanged" ScrollViewer.VerticalScrollMode="Enabled" ItemsSource="{x:Bind Source}">

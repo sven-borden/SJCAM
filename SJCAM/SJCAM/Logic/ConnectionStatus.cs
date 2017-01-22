@@ -87,7 +87,8 @@ namespace SJCAM.Logic
 						wifi.SignalBar = network.SignalBars;
 						wifi.SSID = network.Ssid;
 
-						if (network.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.None)
+						if (network.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.None ||
+							network.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.Open80211)
 							wifi.PswNeeded = false;
 						else
 							wifi.PswNeeded = true;

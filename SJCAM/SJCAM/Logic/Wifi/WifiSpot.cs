@@ -14,6 +14,7 @@ namespace SJCAM.Logic.Wifi
 		public string SSID { get; set; }
 		public bool PswNeeded { get; set; }
 		public string Psw { get; set; }
+
 		public WifiSpot()
 		{
 

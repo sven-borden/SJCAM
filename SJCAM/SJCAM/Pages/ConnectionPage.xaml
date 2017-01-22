@@ -38,7 +38,7 @@
 				<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Let's start to connect" />
 
 
-				<controls:PullToRefreshListView Name="listView" ItemsSource="{x:Bind ListAvailableNetwork}" SelectionChanged="listView_SelectionChanged" OverscrollLimit="0.4" PullThreshold="80" IsPullToRefreshWithMouseEnabled="True" RefreshRequested="listView_RefreshRequested" MinHeight="200">
+				<controls:PullToRefreshListView Name="ListView" ItemsSource="{x:Bind ListAvailableNetwork}" SelectionChanged="listView_SelectionChanged" OverscrollLimit="0.4" PullThreshold="80" IsPullToRefreshWithMouseEnabled="True" RefreshRequested="listView_RefreshRequested" MinHeight="200">
 					<controls:PullToRefreshListView.ItemTemplate>
 						<DataTemplate x:DataType="wifi:WifiSpot">
 							<StackPanel Orientation="Horizontal">

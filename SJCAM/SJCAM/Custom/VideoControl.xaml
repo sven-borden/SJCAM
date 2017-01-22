@@ -23,12 +23,12 @@
 					<ProgressRing Width="100" Height="100" Visibility="Collapsed" Name="Ring" IsActive="True" Foreground="WhiteSmoke"/>
 					<TextBlock Style="{StaticResource DescriptionTextBlock}" Name="Remain" Text="{x:Bind RemainingTime, Mode=TwoWay}"/>
 					<Button Style="{StaticResource StdButton}" Content="Start" Click="Button_ClickAsync" Name="SnapButton"/>
-					<vlc:MediaElement Name="Player" AreTransportControlsEnabled="True" HardwareAcceleration="True" VerticalAlignment="Stretch"
+					<!--<vlc:MediaElement Name="Player" AreTransportControlsEnabled="True" HardwareAcceleration="True" VerticalAlignment="Stretch"
                   Source="http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi">
 						<vlc:MediaElement.TransportControls>
 							<vlc:MediaTransportControls ControlPanelOpacity="0.8" AutoHide="True" CursorAutoHide="True"/>
 						</vlc:MediaElement.TransportControls>
-					</vlc:MediaElement>
+					</vlc:MediaElement>-->
 				</StackPanel>
 			</ScrollViewer>
 		</Border>

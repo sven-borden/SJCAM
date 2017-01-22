@@ -7,8 +7,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -32,6 +36,10 @@ namespace SJCAM.Pages
 		public ObservableCollection<WifiSpot> ListAvailableNetwork;
 		bool refreshing = false;
 		private string password = string.Empty;
+		private List<WifiSpot> knownWifi;
+		StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+
 		public ConnectionPage()
 		{
 			ListAvailableNetwork = new ObservableCollection<WifiSpot>();
@@ -47,6 +55,11 @@ namespace SJCAM.Pages
 			refreshing = true;
 			PopupRing.IsEnabled = true;
 			PopupRing.Visibility = Visibility.Visible;
+			if (await TryConnectingKnownNetwork())
+			{
+				GotoNextPage();
+				return;
+			}
 			ObservableCollection<WifiSpot> tmp = new ObservableCollection<WifiSpot>();
 			tmp = await ConnectionStatus.GetAvailableNetwork();
 			List<WifiSpot> toRemove = new List<WifiSpot>();
@@ -62,6 +75,35 @@ namespace SJCAM.Pages
 					ListAvailableNetwork.Insert(0,wifi);
 			PopupRing.Visibility = Visibility.Collapsed;
 			refreshing = false;
+		}
+
+		private async Task<bool> TryConnectingKnownNetwork()
+		{
+			knownWifi = new List<WifiSpot>();
+			try
+			{
+				using (var stream = File.OpenRead(Path.Combine(localFolder.Path, "Networks")))
+				{
+					var serializer = new XmlSerializer(knownWifi.GetType());
+					knownWifi = serializer.Deserialize(stream) as List<WifiSpot>;
+				}
+			}
+			catch(Exception e)
+			{
+
+			}
+			//knownWifi = localFolder.Values["KnownNetworks"] as List<WifiSpot>;
+			if (knownWifi == null)
+				return false;
+			var tmp = await ConnectionStatus.GetAvailableNetwork();
+			foreach (WifiSpot wifi in tmp)
+				if (knownWifi.Contains(wifi))
+				{
+					bool a = await ConnectionStatus.WifiNameAsync(wifi);
+					if(a)
+						return true;
+				}
+			return false;
 		}
 
 		private async void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
@@ -80,7 +122,7 @@ namespace SJCAM.Pages
 		{
 			PopupPassword.Width = this.ActualWidth;
 			PopupPassword.VerticalOffset = 150;
-			WifiSpot wifi = listView.SelectedItem as WifiSpot;
+			WifiSpot wifi = ListView.SelectedItem as WifiSpot;
 			if (wifi.PswNeeded == false)
 				Connect(wifi);
 			else
@@ -100,12 +142,37 @@ namespace SJCAM.Pages
 			}
 			PopupRing.Visibility = Visibility.Collapsed;
 			if (result)
-				;//TODO goto next page
+			{
+				//Save the wifispot
+				if (knownWifi == null)
+					knownWifi = new List<WifiSpot>();
+				knownWifi.Add(wifi);
+				using (MemoryStream ms = new MemoryStream())
+				{
+					var writer = new System.IO.StreamWriter(ms);
+					var serializer = new XmlSerializer(knownWifi.GetType());
+					serializer.Serialize(writer, this);
+					writer.Flush();
+
+					//if the serialization succeed, rewrite the file.
+					File.WriteAllBytes(Path.Combine(localFolder.Path, "Newtworks"), ms.ToArray());
+				}
+			GotoNextPage();//TODO goto next page
+			}
 		}
 
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
 		{
 			//Skip this section
+			GotoNextPage();
+		}
+
+		private async void GotoNextPage()
+		{
+			foreach (var item in MainStack.Children)
+				await item.Fade(0, 500, 0).StartAsync();
+			await Background.Blur(0, 200, 0).StartAsync();
+			Frame.Navigate(typeof(DevicePage));
 		}
 
 		private void listView_RefreshRequested(object sender, EventArgs e)
@@ -126,7 +193,7 @@ namespace SJCAM.Pages
 				return;
 			PopupPassword.IsOpen = false;
 			ValidateWifiButton.IsEnabled = false;
-			WifiSpot spot = (listView.SelectedItem as WifiSpot);
+			WifiSpot spot = (ListView.SelectedItem as WifiSpot);
 			spot.Psw = password;
 			Connect(spot);
 		}

@@ -61,7 +61,7 @@ namespace SJCAM
 
 		private async void RetreiveWifi()
 		{
-			List<WifiSpot> tmp = await ConnectionStatus.GetAvailableNetwork();
+			ObservableCollection<WifiSpot> tmp = await ConnectionStatus.GetAvailableNetwork();
 			ListAvailableWifi.Clear();
 			foreach (WifiSpot t in tmp)
 				if(!ListAvailableWifi.Contains(t))
@@ -72,7 +72,7 @@ namespace SJCAM
 		private async void CheckConnection()
 		{
 			connectionBarVisibility = Visibility.Visible;
-			bool _conn = await ConnectionStatus.WifiNameAsync(ConnectStatusProgressBar);
+			bool _conn = await ConnectionStatus.WifiNameAsync(new WifiSpot());
 			if (_conn)
 				ConnectionStatusText = "Connected";
 			else
@@ -150,7 +150,7 @@ namespace SJCAM
 			ConnectStatusProgressBar.Visibility = Visibility.Visible;
 			ConnectionStatusText = "Try connecting : " + spot.SSID;
 			this.Bindings.Update();
-			bool connection = await ConnectionStatus.WifiNameAsync(ConnectStatusProgressBar, WifiListView.SelectedItem as WifiSpot);
+			bool connection = await ConnectionStatus.WifiNameAsync(WifiListView.SelectedItem as WifiSpot);
 			ConnectStatusBar.Background = AppColor.GetConnectionColor(connection);
 			DispatcherTimer coverOut = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 2) };
 			coverOut.Tick += (t, ex) => { connectionBarVisibility = Visibility.Collapsed; ConnectStatusBar.Visibility = connectionBarVisibility; (t as DispatcherTimer).Stop(); };

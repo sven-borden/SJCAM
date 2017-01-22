@@ -42,7 +42,7 @@ namespace SJCAM.Logic
 
 		public async static Task<ObservableCollection<WifiSpot>> GetAvailableNetwork()
 		{
-			ObservableCollection<WifiSpot> list = new List<WifiSpot>();
+			ObservableCollection<WifiSpot> list = new ObservableCollection<WifiSpot>();
 			try
 			{
 				var access = await WiFiAdapter.RequestAccessAsync();
@@ -73,6 +73,7 @@ namespace SJCAM.Logic
 				bool ispresent = false;
 				foreach (var network in report.AvailableNetworks)
 				{
+					Debug.WriteLine(network.Ssid);
 					ispresent = false;
 					foreach (WifiSpot item in list)
 						if (item.SSID == network.Ssid)
@@ -86,12 +87,13 @@ namespace SJCAM.Logic
 						wifi.SignalBar = network.SignalBars;
 						wifi.SSID = network.Ssid;
 
-						if (network.SecuritySettings.NetworkAuthenticationType != NetworkAuthenticationType.Open80211)
+						if (network.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.None)
 							wifi.PswNeeded = false;
 						else
 							wifi.PswNeeded = true;
+						list.Add(wifi);
 					}
-
+					
 				}
 			}
 			catch (Exception e)
@@ -102,24 +104,15 @@ namespace SJCAM.Logic
 			return list;
 		}
 
-		public async static Task<bool> WifiNameAsync(ProgressBar bar, WifiSpot wifi = null)
+		public async static Task<bool> WifiNameAsync(WifiSpot wifi)
 		{
 			IsConnected = false;
 			if (wifi == null)
-			{
-				wifi = new WifiSpot();
-				wifi.PswNeeded = true;
-				wifi.SSID = "M20";
-				wifi.Psw = "12345678";
-			}
+				return false;
 			try
 			{
-				bar.IsIndeterminate = false;
-				Debug.WriteLine("Checking...");
-				bar.Value++;
+				Debug.WriteLine("Connecting to : " + wifi.SSID);
 				var access = await WiFiAdapter.RequestAccessAsync();
-				bar.Value++;
-				Debug.WriteLine("Request");
 				WiFiAdapter firstAdapter;
 
 				switch (access)
@@ -136,15 +129,12 @@ namespace SJCAM.Logic
 					default:
 						break;
 				}
-				bar.Value++;
 				var result = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(WiFiAdapter.GetDeviceSelector());
 				if (result.Count <= 0)
 					return false;
-				bar.Value++;
 				firstAdapter = await WiFiAdapter.FromIdAsync(result[0].Id);
 				await firstAdapter.ScanAsync();
 
-				bar.Value++;
 				var report = firstAdapter.NetworkReport;
 				foreach (var i in report.AvailableNetworks)
 					Debug.WriteLine(i.Ssid);
@@ -153,8 +143,6 @@ namespace SJCAM.Logic
 				{
 					if (network.Ssid.Contains(wifi.SSID))
 					{
-						bar.Value += 3;
-
 						WiFiConnectionResult connectionResult = null;
 						if (wifi.PswNeeded)
 						{
@@ -166,7 +154,7 @@ namespace SJCAM.Logic
 							}
 							catch(Exception e)
 							{
-
+								Debug.WriteLine(e.ToString());
 							}
 						}
 						else
@@ -176,7 +164,6 @@ namespace SJCAM.Logic
 							return false;
 						else
 						{
-							bar.Value = bar.Maximum;
 							IsConnected = true;
 							return IsConnected;
 						}

@@ -3,44 +3,69 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SJCAM.Pages"
+	xmlns:wifi="using:SJCAM.Logic.Wifi"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"	
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<Image Name="Background" Source="ms-appx:///Images/bg-colored.jpg" Stretch="UniformToFill"/>
-		<StackPanel Name="MainStack">
-			<TextBlock Style="{StaticResource TitleTextBlock}" Text="Connect to camera" />
-			<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Let's start to connect" />
+		<Popup Name="PopupPassword">
+			<Popup.Transitions>
+				<TransitionCollection>
+					<PopupThemeTransition />
+				</TransitionCollection>
+			</Popup.Transitions>
 			<Border BorderBrush="DeepSkyBlue" Background="{StaticResource ApplicationPageBackgroundThemeBrush}" BorderThickness="1">
-				<Grid Background="#44444444" Name="PopupGrid">
-					<StackPanel Name="PopupStack">
-						<TextBlock Style="{StaticResource PopupTitleTextBlock}" Text="Select a camera" />
-						<TextBlock Style="{StaticResource DescriptionTextBlock}" Foreground="Gray" Text="We wasn't able to automaticaly connect to your SJCAM action camera, choose the wifi below"/>
-
-						<ListView Name="WifiListView"  ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.IsVerticalRailEnabled="True" Height="500" SelectionChanged="WifiListView_SelectionChanged">
-							<ListView.ItemTemplate>
-								<DataTemplate>
-									<StackPanel Orientation="Horizontal">
-										<TextBlock Text="{Binding SSID}"/>
-									</StackPanel>
-								</DataTemplate>
-							</ListView.ItemTemplate>
-						</ListView>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition />
-								<ColumnDefinition />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-							<Button Grid.Column="0" IsEnabled="False" Name="ValidateWifiButton" Style="{StaticResource WifiButton}" Content="Ok" Click="ValidateWifiButton_Click"/>
-							<Button Grid.Column="1" Name="CancelButton" Style="{StaticResource WifiButton}" Content="Cancel" Click="CancelButton_Click"/>
-							<Button Grid.Column="2" Name="RefreshButton" FontFamily="Segoe MDL2 Assets" Foreground="WhiteSmoke" Click="RefreshButton_Click" Content="&#xE117;" />
-						</Grid>
+				<Grid Background="#44444444" Name="PopupPswGrid">
+					<StackPanel Name="PopupPswStack">
+						<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Please enter the password" />
+						<TextBox InputScope="Password" Name="PswBox" PlaceholderText="Password required" Margin="10"/>
+						<Button Name="ValidatePassword" Click="ValidatePassword_Click" Content="Validate" Style="{StaticResource WifiButton}"/>
 					</StackPanel>
-					<ProgressRing Name="PopupRing" IsActive="True" Visibility="Collapsed" Width="200" Height="200"/>
 				</Grid>
 			</Border>
-		</StackPanel>
+		</Popup>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+
+			<StackPanel Name="MainStack" Grid.Row="0">
+				<TextBlock Style="{StaticResource TitleTextBlock}" Text="Connect to camera" />
+				<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Let's start to connect" />
+
+
+				<controls:PullToRefreshListView Name="listView" ItemsSource="{x:Bind ListAvailableNetwork}" SelectionChanged="listView_SelectionChanged" OverscrollLimit="0.4" PullThreshold="80" IsPullToRefreshWithMouseEnabled="True" RefreshRequested="listView_RefreshRequested" MinHeight="200">
+					<controls:PullToRefreshListView.ItemTemplate>
+						<DataTemplate x:DataType="wifi:WifiSpot">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{x:Bind SSID}" Style="{StaticResource DescriptionTextBlock}" FontSize="15"/>
+							</StackPanel>
+						</DataTemplate>
+					</controls:PullToRefreshListView.ItemTemplate>
+					<controls:PullToRefreshListView.PullToRefreshContent>
+						<Border HorizontalAlignment="Center" x:Name="refreshindicator" CornerRadius="30" Height="20" Width="20" >
+							<StackPanel>
+								<TextBlock FontSize="16" Opacity="0.5" Text="Pull down to refresh data" Style="{StaticResource DescriptionTextBlock}"/>
+								<TextBlock Style="{StaticResource DescriptionTextBlock}" FontFamily="Segoe MDL2 Assets" Text="&#xE011;"/>
+							</StackPanel>
+						</Border>
+					</controls:PullToRefreshListView.PullToRefreshContent>
+				</controls:PullToRefreshListView>
+			</StackPanel>
+			
+			<Grid Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Button Grid.Column="0" IsEnabled="False" Name="ValidateWifiButton" Style="{StaticResource WifiButton}" Content="Ok" Click="ValidateWifiButton_Click"/>
+				<Button Grid.Column="1" Name="CancelButton" Style="{StaticResource WifiButton}" Content="skip" Click="CancelButton_Click"/>
+			</Grid>
+		</Grid>
+		<ProgressRing Name="PopupRing" IsActive="True" Visibility="Collapsed" Width="50" Height="50"/>
 	</Grid>
 </Page>

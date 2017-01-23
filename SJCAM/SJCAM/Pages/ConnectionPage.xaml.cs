@@ -38,16 +38,27 @@ namespace SJCAM.Pages
 		private string password = string.Empty;
 		private List<WifiSpot> knownWifi;
 		StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-
+		string FilePath;
 
 		public ConnectionPage()
 		{
 			ListAvailableNetwork = new ObservableCollection<WifiSpot>();
+			FilePath = Path.Combine(localFolder.Path, "Networks");
 			this.InitializeComponent();
 			currentView = ApplicationView.GetForCurrentView();
 			Window.Current.SizeChanged += Current_SizeChanged;
-			Background.Blur(8f, 1000, 500).Start();
+			Animate();
 			WIFI();
+		}
+
+		private async void Animate()
+		{
+			Background.Blur(8f, 1000, 500).Start();
+			foreach (var item in MainStack.Children)
+				item.Fade(0, 0, 0).Start();
+			MainStack.Fade(1, 1, 1).Start();
+			foreach (var item in MainStack.Children)
+				await item.Fade(1, 800, 500).StartAsync();
 		}
 
 		private async void WIFI()
@@ -82,11 +93,7 @@ namespace SJCAM.Pages
 			knownWifi = new List<WifiSpot>();
 			try
 			{
-				using (var stream = File.OpenRead(Path.Combine(localFolder.Path, "Networks")))
-				{
-					var serializer = new XmlSerializer(knownWifi.GetType());
-					knownWifi = serializer.Deserialize(stream) as List<WifiSpot>;
-				}
+				knownWifi = WrittingReading.Deserialize(FilePath);
 			}
 			catch(Exception e)
 			{
@@ -147,17 +154,8 @@ namespace SJCAM.Pages
 				if (knownWifi == null)
 					knownWifi = new List<WifiSpot>();
 				knownWifi.Add(wifi);
-				using (MemoryStream ms = new MemoryStream())
-				{
-					var writer = new System.IO.StreamWriter(ms);
-					var serializer = new XmlSerializer(knownWifi.GetType());
-					serializer.Serialize(writer, this);
-					writer.Flush();
-
-					//if the serialization succeed, rewrite the file.
-					File.WriteAllBytes(Path.Combine(localFolder.Path, "Newtworks"), ms.ToArray());
-				}
-			GotoNextPage();//TODO goto next page
+				WrittingReading.Serialize(knownWifi, FilePath);
+				GotoNextPage();//TODO goto next page
 			}
 		}
 

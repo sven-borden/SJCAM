@@ -122,6 +122,7 @@
     <Compile Include="Logic\StartupModel.cs" />
     <Compile Include="Logic\Wifi\StrenghToString.Converter.cs" />
     <Compile Include="Logic\Wifi\WifiSpot.cs" />
+    <Compile Include="Logic\WrittingReading.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

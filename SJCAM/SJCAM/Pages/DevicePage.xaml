@@ -20,7 +20,7 @@
 				</Grid.RowDefinitions>
 
 				<TextBlock Grid.Row ="0" Text="{Binding Model}" Style="{StaticResource TitleTextBlock}"/>
-				<vlc:MediaElement Grid.Row="1" x:Name="StreamPlayer" AreTransportControlsEnabled="True" AutoPlay="False" Margin="10">
+				<vlc:MediaElement Grid.Row="1" x:Name="StreamPlayer" AreTransportControlsEnabled="True" AutoPlay="False" Margin="10" Source="rtsp://192.168.1.254/sjcam.mp4" HardwareAcceleration="False">
 					<vlc:MediaElement.TransportControls>
 						<vlc:MediaTransportControls ControlPanelOpacity="0.8" AutoHide="True" CursorAutoHide="True"/>
 					</vlc:MediaElement.TransportControls>
@@ -37,8 +37,8 @@
 
 						<PivotItem.Content>
 							<Border BorderBrush="#7F008BFF" BorderThickness="2">
-								<StackPanel>
-									<CustomPages:PhotoControl />
+								<StackPanel x:Name="PhotoStack">
+									
 								</StackPanel>
 							</Border>
 						</PivotItem.Content>
@@ -54,8 +54,7 @@
 
 						<PivotItem.Content>
 							<Border BorderBrush="#7F008BFF" BorderThickness="2">
-								<StackPanel>
-									<CustomPages:VideoControl />
+								<StackPanel x:Name="VideoStack">
 								</StackPanel>
 							</Border>
 						</PivotItem.Content>
@@ -71,8 +70,7 @@
 
 						<PivotItem.Content>
 							<Border BorderBrush="#7F008BFF" BorderThickness="2">
-								<StackPanel>
-									<CustomPages:SettingsControls />
+								<StackPanel x:Name="SettingsStack">
 								</StackPanel>
 							</Border>
 						</PivotItem.Content>
@@ -88,8 +86,8 @@
 
 						<PivotItem.Content>
 							<Border BorderBrush="#7F008BFF" BorderThickness="2">
-								<StackPanel>
-									<CustomPages:FilesControl />
+								<StackPanel x:Name="FileStack">
+									<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Comming soon" />
 								</StackPanel>
 							</Border>
 						</PivotItem.Content>

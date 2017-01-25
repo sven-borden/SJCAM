@@ -19,7 +19,7 @@
     <PackageCertificateKeyFile>SJCAM_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>B00A6C32B3129B08CE17C4919115B0FF1AE2AC42</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <AppxBundle>Never</AppxBundle>
+    <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -115,7 +115,10 @@
       <DependentUpon>VideoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\Action.cs" />
+    <Compile Include="Logic\Settings\CameraSettings.cs" />
     <Compile Include="Logic\ConnectionStatus.cs" />
+    <Compile Include="Logic\Settings\PhotoSettings.cs" />
+    <Compile Include="Logic\Settings\VideoSettings.cs" />
     <Compile Include="Logic\StartupModel.cs" />
     <Compile Include="Logic\Wifi\StrenghToString.Converter.cs" />
     <Compile Include="Logic\Wifi\WifiSpot.cs" />

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -54,66 +55,40 @@ namespace SJCAM.Custom
 				"3 min", "5 min", "10 min", "off"
 			};
 			this.InitializeComponent();
-			if (ConnectionStatus.IsConnected == true)
+			Loaded += async (e, o) =>
 			{
-				CheckSettings();
-			}
-			else
-			{
-				ToggleAudio.IsEnabled = false;
-				ToggleGyro.IsEnabled = false;
-				ToggleWDR.IsEnabled = false;
-				ToggleStamp.IsEnabled = false;
-			}
+				await Task.Delay(1000);
+				if (ConnectionStatus.IsConnected == true)
+					CheckSettings();
+				else
+				{
+					ToggleAudio.IsEnabled = false;
+					ToggleGyro.IsEnabled = false;
+					ToggleWDR.IsEnabled = false;
+					ToggleStamp.IsEnabled = false;
+				}
+			};
 		}
 
-		private async void CheckSettings()
+		private void CheckSettings()
 		{
-			string x = await action.GetRequestAsync("3014");
-			if (x == null)
-				return;
-			string[] Cmd = x.Split(new string[] { "<Cmd>", "</Cmd>" }, StringSplitOptions.RemoveEmptyEntries);
-			string[] Status = x.Split(new string[] { "<Status>", "</Status>" }, StringSplitOptions.RemoveEmptyEntries);
-			for (int i = 0; i < Cmd.Length; i++)
-			{
-				if (Cmd[i].Contains("9001"))
-				{
-					if (Status[i] == "1")
-						ToggleGyro.IsChecked = true;
-					else
-						ToggleGyro.IsChecked = false;
-					continue;
-				}
+			ComboExposure.SelectedIndex = CameraSettings.Exposure;
+			ComboWhiteBalance.SelectedIndex = CameraSettings.WhiteBalance;
+			ComboPhotoLapseInterval.SelectedIndex = CameraSettings.PhotoLapse;
+			ComboVideoLapseInterval.SelectedIndex = CameraSettings.VideoLapse;
+			ComboAutoPowerOff.SelectedIndex = CameraSettings.AutoPower;
+			ToggleAudio.IsChecked = ConvertToBool(CameraSettings.AudioOn);
+			ToggleGyro.IsChecked = ConvertToBool(CameraSettings.GyroOn);
+			ToggleStamp.IsChecked = ConvertToBool(CameraSettings.TimeStamp);
+			ToggleWDR.IsChecked = ConvertToBool(CameraSettings.WDROn);
+		}
 
-				if (Cmd[i].Contains("2007"))
-				{
-					if (Status[i] == "1")
-						ToggleAudio.IsChecked = true;
-					else
-						ToggleAudio.IsChecked = false;
-					continue;
-				}
-
-				if (Cmd[i].Contains("2004"))
-				{
-					if (Status[i] == "1")
-						ToggleWDR.IsChecked = true;
-					else
-						ToggleWDR.IsChecked = false;
-					continue;
-				}
-
-				if (Cmd[i].Contains("2005"))
-				{ ComboExposure.SelectedIndex = Convert.ToInt32(Status[i]); continue; }
-				if (Cmd[i].Contains("1007"))
-				{ ComboWhiteBalance.SelectedIndex = Convert.ToInt32(Status[i]); continue; }
-				if (Cmd[i].Contains("1012"))
-				{ ComboPhotoLapseInterval.SelectedIndex = Convert.ToInt32(Status[i]); continue; }
-				if (Cmd[i].Contains("2019"))
-				{ ComboVideoLapseInterval.SelectedIndex = Convert.ToInt32(Status[i]); continue; }
-				if (Cmd[i].Contains("3007"))
-				{ ComboAutoPowerOff.SelectedIndex = Convert.ToInt32(Status[i]); continue; }
-			}
+		private bool? ConvertToBool(int audioOn)
+		{
+			if (audioOn == 0)
+				return false;
+			else
+				return true;
 		}
 
 		private void Waiting()

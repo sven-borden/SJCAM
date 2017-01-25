@@ -1,5 +1,7 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Animations;
+using SJCAM.Custom;
 using SJCAM.Logic;
+using SJCAM.Logic.Settings;
 using SJCAM.Style;
 using System;
 using System.Collections.Generic;
@@ -52,13 +54,25 @@ namespace SJCAM.Pages
 				}
 				StreamPlayer.Width = this.ActualWidth - 40;
 				StreamPlayer.Height = StreamPlayer.Width / 16 * 9;
-				StreamPlayer.Source = new Uri(action.LiveFeed);
 				StreamPlayer.Loaded += (r, p) =>
 				{
-					StreamPlayer.Play();
+					//StreamPlayer.Play();
 				};
 			};
 
+			LoadSettings();
+
+		}
+
+		private async void LoadSettings()
+		{
+			string settings = await action.GetRequestAsync("3014");
+			CameraSettings.LoadCameraSettings(settings);
+			PhotoSettings.LoadPhotoSettings(settings);
+			VideoSettings.LoadVideoSettings(settings);
+			PhotoStack.Children.Add(new PhotoControl());
+			VideoStack.Children.Add(new VideoControl());
+			SettingsStack.Children.Add(new SettingsControls());
 		}
 
 		private async void Animate()

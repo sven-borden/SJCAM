@@ -13,19 +13,31 @@ namespace SJCAM.Logic
 	{
 		public static void Serialize(List<WifiSpot> wifi, string _Path)
 		{
-			XmlSerializer serializer = new XmlSerializer(typeof(List<WifiSpot>));
-			FileStream fs = new FileStream(_Path, FileMode.CreateNew);
-			serializer.Serialize(fs, wifi);
+			try
+			{
+				XmlSerializer serializer = new XmlSerializer(typeof(List<WifiSpot>));
+				FileStream fs = new FileStream(_Path, FileMode.OpenOrCreate);
+				serializer.Serialize(fs, wifi);
+			}
+			catch(Exception e)
+			{
+				e.ToString();
+			}
 		}
 
 		public static List<WifiSpot> Deserialize(string _Path)
 		{
 			List<WifiSpot> wifi = null;
-
-			XmlSerializer serializer = new XmlSerializer(typeof(List<WifiSpot>));
-			FileStream fs = new FileStream(_Path, FileMode.Open);
-			wifi = (List<WifiSpot>)serializer.Deserialize(fs);
-
+			try
+			{
+				XmlSerializer serializer = new XmlSerializer(typeof(List<WifiSpot>));
+				FileStream fs = new FileStream(_Path, FileMode.Open);
+				wifi = (List<WifiSpot>)serializer.Deserialize(fs);
+			}
+			catch(Exception e)
+			{
+				e.ToString();
+			}
 			return wifi;
 		} 
 	}

@@ -1,4 +1,5 @@
 ﻿using SJCAM.Logic;
+using SJCAM.Logic.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -33,38 +35,26 @@ namespace SJCAM.Custom
 			};
 			action = new Logic.Action();
 			this.InitializeComponent();
-			if (ConnectionStatus.IsConnected == true)
+			this.Loaded += async (e, o) =>
 			{
-				CheckSettings();
-			}
-			else
-			{
-				SnapButton.IsEnabled = false;
-			}
+				await Task.Delay(1000);
+				if (ConnectionStatus.IsConnected == true)
+					CheckSettings();
+				else
+					SnapButton.IsEnabled = false;
+			};
 		}
 
-		private async void CheckSettings()
+		private void CheckSettings()
 		{
-			string x = await action.GetRequestAsync("3014");
-			if (x == null)
-				return;
-			string[] Cmd = x.Split(new string[] { "<Cmd>", "</Cmd>" }, StringSplitOptions.RemoveEmptyEntries);
-			string[] Status = x.Split(new string[] { "<Status>", "</Status>" }, StringSplitOptions.RemoveEmptyEntries);
-			for (int i = 0; i < Cmd.Length; i++)
+			try
 			{
-				Debug.WriteLine(Cmd[i]);
-				if (Cmd[i].Contains("1002"))
-				{
-					try
-					{
-						ResolutionCombo.SelectedIndex = Convert.ToInt32(Status[i]);
-						return;
-					}
-					catch(IndexOutOfRangeException outOfRange)
-					{
-						Debug.WriteLine(outOfRange.Message);
-					}
-				}
+				ResolutionCombo.SelectedIndex = PhotoSettings.PhotoResolution;
+				return;
+			}
+			catch (ArgumentException outOfRange)
+			{
+				Debug.WriteLine(outOfRange.Message);
 			}
 		}
 

@@ -4,6 +4,7 @@ using SJCAM.Logic.Wifi;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -190,6 +191,11 @@ namespace SJCAM.Pages
 
 		private void ValidatePassword_Click(object sender, RoutedEventArgs e)
 		{
+			CheckPassword();
+		}
+
+		private void CheckPassword()
+		{
 			password = PswBox.Text;
 			if (password == string.Empty)
 				return;
@@ -198,6 +204,18 @@ namespace SJCAM.Pages
 			WifiSpot spot = (list.SelectedItem as WifiSpot);
 			spot.Psw = password;
 			Connect(spot);
+		}
+
+		private void PopupPassword_Opened(object sender, object e)
+		{
+			PswBox.Focus(FocusState.Keyboard);
+			PswBox.KeyDown += PswBox_KeyDown;
+		}
+
+		private void PswBox_KeyDown(object sender, KeyRoutedEventArgs e)
+		{
+			if (e.Key == Windows.System.VirtualKey.Enter)
+				CheckPassword();
 		}
 	}
 }

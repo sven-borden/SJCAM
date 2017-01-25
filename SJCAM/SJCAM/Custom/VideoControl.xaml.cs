@@ -1,4 +1,5 @@
 ﻿using SJCAM.Logic;
+using SJCAM.Logic.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -30,6 +32,11 @@ namespace SJCAM.Custom
 
 		public VideoControl()
 		{
+			StartAsync();
+		}
+
+		private void StartAsync()
+		{
 			ResolutionString = new List<string>()
 			{
 				"2K 30fps", "1080p 60fps", "1080p 30fps", "720p 120fps", "720p 60fps", "720p 30fps","480p 240fps"
@@ -37,59 +44,29 @@ namespace SJCAM.Custom
 
 			action = new Logic.Action();
 			this.InitializeComponent();
-			if (ConnectionStatus.IsConnected == true)
+			this.Loaded += async (e, o) =>
 			{
-				CheckIsRecording();
-				CheckSettings();
-				UpdateTimeRemain();
-			}
-			else
-			{
-				SnapButton.IsEnabled = false;
-			}
-			this.Loaded += (e, r) =>
-			{
-				
-			};	
+				await Task.Delay(1000);
+				if (ConnectionStatus.IsConnected == true)
+					CheckSettings();
+				else
+					SnapButton.IsEnabled = false;
+			};
 		}
 
-		private async void CheckSettings()
+		private void CheckSettings()
 		{
-			string x = await action.GetRequestAsync("3014");
-			if (x == null)
-				return;
-			string[] Cmd = x.Split(new string[] { "<Cmd>", "</Cmd>" }, StringSplitOptions.RemoveEmptyEntries);
-			string[] Status = x.Split(new string[] { "<Status>", "</Status>" }, StringSplitOptions.RemoveEmptyEntries);
-			for (int i = 0; i < Cmd.Length; i++)
+			try
 			{
-				if (Cmd[i].Contains("2002"))
-				{
-					ResolutionCombo.SelectedIndex = Convert.ToInt32(Status[i]);
-					return;
-				}
+				ResolutionCombo.SelectedIndex = VideoSettings.VideoResolution;
+			}
+			catch (ArgumentException e)
+			{
 			}
 		}
 
-		private async void CheckIsRecording()
+		private void UpdateTimeRemain(int second)
 		{
-			string x = await action.GetRequestAsync("2016");
-			if (x == null)
-				return;
-			string[] temp = x.Split(new string[] { "<Value>", "</Value>" }, StringSplitOptions.RemoveEmptyEntries);
-			if (temp[1] == "0")
-				SnapButton.Content = "Start";
-			else
-				SnapButton.Content = "Stop";
-		}
-
-		private async void UpdateTimeRemain()
-		{
-			string x = await action.GetRequestAsync("2009");
-			if (x == null)
-				return;
-			string[] temp = x.Split(new string[] { "<Value>", "</Value>" }, StringSplitOptions.RemoveEmptyEntries);
-			int second = Convert.ToInt32(temp[1]);
-
 			RemainingTime = (second / 3600).ToString() + "h:"; second = second % 3600;
 			RemainingTime += (second / 60).ToString() + "m:"; second = second % 60;
 			RemainingTime += (second).ToString() + "s";
@@ -128,7 +105,6 @@ namespace SJCAM.Custom
 			(sender as ComboBox).IsEnabled = false;
 			Waiting();
 			string msg = await action.GetRequestAsync("2002", selected.ToString());
-			UpdateTimeRemain();
 			(sender as ComboBox).IsEnabled = true;
 			Waiting();
 		}

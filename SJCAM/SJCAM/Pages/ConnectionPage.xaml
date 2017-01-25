@@ -11,7 +11,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<Image Name="Background" Source="ms-appx:///Images/bg-colored.jpg" Stretch="UniformToFill"/>
-		<Popup Name="PopupPassword">
+		<Popup Name="PopupPassword" Opened="PopupPassword_Opened">
 			<Popup.Transitions>
 				<TransitionCollection>
 					<PopupThemeTransition />
@@ -21,7 +21,7 @@
 				<Grid Background="#44444444" Name="PopupPswGrid">
 					<StackPanel Name="PopupPswStack">
 						<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Please enter the password" />
-						<TextBox InputScope="Password" Name="PswBox" PlaceholderText="Password required" Margin="10"/>
+						<TextBox Name="PswBox" PlaceholderText="Password required" Margin="10"/>
 						<Button Name="ValidatePassword" Click="ValidatePassword_Click" Content="Validate" Style="{StaticResource WifiButton}"/>
 					</StackPanel>
 				</Grid>

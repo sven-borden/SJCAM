@@ -73,7 +73,6 @@ namespace SJCAM.Logic
 				bool ispresent = false;
 				foreach (var network in report.AvailableNetworks)
 				{
-					Debug.WriteLine(network.Ssid);
 					ispresent = false;
 					foreach (WifiSpot item in list)
 						if (item.SSID == network.Ssid)

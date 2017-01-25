@@ -103,10 +103,14 @@ namespace SJCAM.Pages
 			if (knownWifi == null)
 				return false;
 			var tmp = await ConnectionStatus.GetAvailableNetwork();
+			List<string> SSID = new List<string>();
+			foreach (WifiSpot wifi in knownWifi)
+				SSID.Add(wifi.SSID);
+
 			foreach (WifiSpot wifi in tmp)
-				if (knownWifi.Contains(wifi))
+				if (SSID.Contains(wifi.SSID))
 				{
-					bool a = await ConnectionStatus.WifiNameAsync(wifi);
+					bool a = await ConnectionStatus.ConnectToWifi(wifi);
 					if(a)
 						return true;
 				}
@@ -129,7 +133,7 @@ namespace SJCAM.Pages
 		{
 			PopupPassword.Width = this.ActualWidth;
 			PopupPassword.VerticalOffset = 150;
-			WifiSpot wifi = ListView.SelectedItem as WifiSpot;
+			WifiSpot wifi = mylist.SelectedItem as WifiSpot;
 			if (wifi.PswNeeded == false)
 				Connect(wifi);
 			else
@@ -139,7 +143,7 @@ namespace SJCAM.Pages
 		private async void Connect(WifiSpot wifi)
 		{
 			PopupRing.Visibility = Visibility.Visible;
-			bool result = await ConnectionStatus.WifiNameAsync(wifi);
+			bool result = await ConnectionStatus.ConnectToWifi(wifi);
 			if(!result)
 			{
 				MessageDialog msg = new MessageDialog("Failed to connect");
@@ -191,7 +195,7 @@ namespace SJCAM.Pages
 				return;
 			PopupPassword.IsOpen = false;
 			ValidateWifiButton.IsEnabled = false;
-			WifiSpot spot = (ListView.SelectedItem as WifiSpot);
+			WifiSpot spot = (mylist.SelectedItem as WifiSpot);
 			spot.Psw = password;
 			Connect(spot);
 		}

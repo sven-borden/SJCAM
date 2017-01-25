@@ -49,12 +49,7 @@ namespace SJCAM.Custom
 			}
 			this.Loaded += (e, r) =>
 			{
-				//Player.Width = this.ActualWidth - 40;
-				//Player.Height = Player.Width / 16 * 9;
-				//if(ConnectionStatus.IsConnected)
-				//	Player.Source = new Uri(action.LiveFeed);
-				//Player.AutoPlay = false;
-				//Player.HardwareAcceleration = false;
+				
 			};	
 		}
 

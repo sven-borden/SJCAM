@@ -20,7 +20,7 @@
     <PackageCertificateThumbprint>B00A6C32B3129B08CE17C4919115B0FF1AE2AC42</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>arm</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -116,16 +116,10 @@
     </Compile>
     <Compile Include="Logic\Action.cs" />
     <Compile Include="Logic\ConnectionStatus.cs" />
-    <Compile Include="Logic\Settings\MultipleOptionsSetting.cs" />
-    <Compile Include="Logic\Settings\Setting.cs" />
-    <Compile Include="Logic\Settings\ToggleSetting.cs" />
     <Compile Include="Logic\StartupModel.cs" />
     <Compile Include="Logic\Wifi\StrenghToString.Converter.cs" />
     <Compile Include="Logic\Wifi\WifiSpot.cs" />
     <Compile Include="Logic\WrittingReading.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\CameraChoose.xaml.cs">
       <DependentUpon>CameraChoose.xaml</DependentUpon>
     </Compile>
@@ -230,10 +224,6 @@
     <Page Include="Custom\VideoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\CameraChoose.xaml">
       <SubType>Designer</SubType>

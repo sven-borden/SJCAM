@@ -105,7 +105,7 @@ namespace SJCAM.Logic
 			return list;
 		}
 
-		public async static Task<bool> WifiNameAsync(WifiSpot wifi)
+		public async static Task<bool> ConnectToWifi(WifiSpot wifi)
 		{
 			IsConnected = false;
 			if (wifi == null)
@@ -151,7 +151,7 @@ namespace SJCAM.Logic
 							{
 								PasswordCredential pass = new PasswordCredential();
 								pass.Password = wifi.Psw;
-								connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Manual, pass);
+								connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Automatic, pass);
 							}
 							catch(Exception e)
 							{
@@ -159,15 +159,13 @@ namespace SJCAM.Logic
 							}
 						}
 						else
-							connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Manual);
+							connectionResult = await firstAdapter.ConnectAsync(network, WiFiReconnectionKind.Automatic);
 
-						if (connectionResult.ConnectionStatus != WiFiConnectionStatus.Success)
-							return false;
-						else
-						{
+						if (connectionResult.ConnectionStatus == WiFiConnectionStatus.Success)
 							IsConnected = true;
-							return IsConnected;
-						}
+						else
+							IsConnected = false;
+						return IsConnected;
 					}
 				}
 				

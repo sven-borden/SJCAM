@@ -38,7 +38,7 @@
 				<TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Let's start to connect" />
 
 
-				<controls:PullToRefreshListView Name="ListView" ItemsSource="{x:Bind ListAvailableNetwork}" SelectionChanged="listView_SelectionChanged" OverscrollLimit="0.4" PullThreshold="80" IsPullToRefreshWithMouseEnabled="True" RefreshRequested="listView_RefreshRequested" MinHeight="200">
+				<controls:PullToRefreshListView Name="mylist" ItemsSource="{x:Bind ListAvailableNetwork}" SelectionChanged="listView_SelectionChanged" OverscrollLimit="0.4" PullThreshold="80" IsPullToRefreshWithMouseEnabled="True" RefreshRequested="listView_RefreshRequested" MinHeight="200">
 					<controls:PullToRefreshListView.ItemTemplate>
 						<DataTemplate x:DataType="wifi:WifiSpot">
 							<StackPanel Orientation="Horizontal">
@@ -66,6 +66,6 @@
 				<Button Grid.Column="1" Name="CancelButton" Style="{StaticResource WifiButton}" Content="skip" Click="CancelButton_Click"/>
 			</Grid>
 		</Grid>
-		<ProgressRing Name="PopupRing" IsActive="True" Visibility="Collapsed" Width="50" Height="50"/>
+		<ProgressRing Name="PopupRing" IsActive="True" Visibility="Collapsed" Foreground="WhiteSmoke" Width="50" Height="50"/>
 	</Grid>
 </Page>

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Animations;
+using SJCAM.Logic;
+using SJCAM.Style;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +8,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,24 +30,47 @@ namespace SJCAM.Pages
 	public sealed partial class DevicePage : Page
 	{
 		ApplicationView currentView;
+		public string Model { get; private set; }
+		ApplicationDataContainer localSettings;
+		Logic.Action action;
 
 		public DevicePage()
 		{
+			localSettings = ApplicationData.Current.LocalSettings;
+			Model = localSettings.Values["CameraModel"] as string;
+			action = new Logic.Action();
 			this.InitializeComponent();
 			currentView = ApplicationView.GetForCurrentView();
 			Window.Current.SizeChanged += Current_SizeChanged;
 			Animate();
+			this.Loaded += (e, o) =>
+			{
+				if (ConnectionStatus.IsConnected == false)
+				{
+					ShowErrorMsgAsync("Not connected to a camera");
+					return;
+				}
+				StreamPlayer.Width = this.ActualWidth - 40;
+				StreamPlayer.Height = StreamPlayer.Width / 16 * 9;
+				StreamPlayer.Source = new Uri(action.LiveFeed);
+				StreamPlayer.Loaded += (r, p) =>
+				{
+					StreamPlayer.Play();
+				};
+			};
 
 		}
 
 		private async void Animate()
 		{
 			Background.Blur(8f, 1000, 1000).Start();
-			foreach (var item in MainStack.Children)
+			foreach (var item in MainGrid.Children)
 				item.Fade(0, 0, 0).Start();
-			MainStack.Fade(1, 1, 1).Start();
-			foreach (var item in MainStack.Children)
+			MainGrid.Fade(1, 1, 1).Start();
+			foreach (var item in MainGrid.Children)
 				await item.Fade(1, 800, 0).StartAsync();
+			MainPivot.SelectedIndex = 0;
+			HeaderPhoto.Background = AppColor.PivotSelectedColor;
 		}
 
 		private async void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
@@ -55,6 +83,47 @@ namespace SJCAM.Pages
 				await Background.Rotate(90, (float)(Background.Width / 2), (float)(Background.Height / 2), 300, 0).StartAsync();
 			if (currentView.Orientation == ApplicationViewOrientation.Portrait)
 				await Background.Rotate(-90, (float)Background.Width / 2, (float)Background.Height / 2, 300, 0).StartAsync();
+		}
+
+		private async void MainPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			SetAllPivotToTransparent();
+			switch (MainPivot.SelectedIndex)
+			{
+				case 0:
+					HeaderPhoto.Background = AppColor.PivotSelectedColor;
+					try
+					{ await action.GetRequestAsync("3001", "0"); }
+					catch (Exception ex)
+					{ ShowErrorMsgAsync(ex.Message); };
+					break;
+				case 1:
+					HeaderVideo.Background = AppColor.PivotSelectedColor;
+					try
+					{ await action.GetRequestAsync("3001", "1"); }
+					catch (Exception ex)
+					{ ShowErrorMsgAsync(ex.Message); };
+					break;
+				case 2:
+					HeaderSettings.Background = AppColor.PivotSelectedColor;
+					break;
+				case 3:
+					HeaderFiles.Background = AppColor.PivotSelectedColor;
+					break;
+				default:
+					break;
+			}
+		}
+
+		private void SetAllPivotToTransparent()
+		{
+			HeaderPhoto.Background = HeaderVideo.Background = HeaderSettings.Background = HeaderFiles.Background = new SolidColorBrush(Colors.Transparent);
+		}
+
+		private async void ShowErrorMsgAsync(string msg)
+		{
+			MessageDialog d = new MessageDialog(msg, "Beta testing error");
+			await d.ShowAsync();
 		}
 	}
 }

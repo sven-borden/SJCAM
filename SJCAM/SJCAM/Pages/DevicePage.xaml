@@ -5,15 +5,97 @@
     xmlns:local="using:SJCAM.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:vlc="using:VLC"
+	xmlns:CustomPages="using:SJCAM.Custom"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 			<Image x:Name="Background" Source="ms-appx:///Images/bg-colored.jpg" Stretch="UniformToFill" />
-			<StackPanel Name="MainStack">
-				<TextBlock Text="" Style="{StaticResource TitleTextBlock}"/>
-				<TextBlock Text="Please choose your Action camera" Style="{StaticResource DescriptionTextBlock}"/>
-			</StackPanel>
+			<Grid Name="MainGrid">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				
+				<TextBlock Grid.Row ="0" Text="{Binding Model}" Style="{StaticResource TitleTextBlock}"/>
+				<vlc:MediaElement Grid.Row="1" Name="StreamPlayer" AreTransportControlsEnabled="True" AutoPlay="False" Margin="10">
+					<vlc:MediaElement.TransportControls>
+						<vlc:MediaTransportControls ControlPanelOpacity="0.8" AutoHide="True" CursorAutoHide="True"/>
+					</vlc:MediaElement.TransportControls>
+				</vlc:MediaElement>
+
+				<Pivot Grid.Row="2" Name="MainPivot" SelectionChanged="MainPivot_SelectionChanged" VerticalAlignment="Stretch" Margin="0,0,0,10">
+					<!--PHOTO-->
+					<PivotItem>
+						<PivotItem.Header>
+							<Grid Name="HeaderPhoto">
+								<TextBlock Style="{StaticResource PivotTextBlockHeader}" Text="&#xE114;"/>
+							</Grid>
+						</PivotItem.Header>
+
+						<PivotItem.Content>
+							<Border BorderBrush="#7F008BFF" BorderThickness="2">
+								<StackPanel>
+									<CustomPages:PhotoControl />
+								</StackPanel>
+							</Border>
+						</PivotItem.Content>
+					</PivotItem>
+
+					<!--VIDEO-->
+					<PivotItem>
+						<PivotItem.Header>
+							<Grid Name="HeaderVideo" >
+								<TextBlock Style="{StaticResource PivotTextBlockHeader}" Text="&#xE116;" />
+							</Grid>
+						</PivotItem.Header>
+
+						<PivotItem.Content>
+							<Border BorderBrush="#7F008BFF" BorderThickness="2">
+								<StackPanel>
+									<CustomPages:VideoControl />
+								</StackPanel>
+							</Border>
+						</PivotItem.Content>
+					</PivotItem>
+
+					<!--Settings-->
+					<PivotItem>
+						<PivotItem.Header>
+							<Grid Name="HeaderSettings">
+								<TextBlock Style="{StaticResource PivotTextBlockHeader}" Text="&#xE115;" />
+							</Grid>
+						</PivotItem.Header>
+
+						<PivotItem.Content>
+							<Border BorderBrush="#7F008BFF" BorderThickness="2">
+								<StackPanel>
+									<CustomPages:SettingsControls />
+								</StackPanel>
+							</Border>
+						</PivotItem.Content>
+					</PivotItem>
+
+					<!--FILES-->
+					<PivotItem>
+						<PivotItem.Header>
+							<Grid Name="HeaderFiles" >
+								<TextBlock Style="{StaticResource PivotTextBlockHeader}" Text="&#xEC50;" />
+							</Grid>
+						</PivotItem.Header>
+
+						<PivotItem.Content>
+							<Border BorderBrush="#7F008BFF" BorderThickness="2">
+								<StackPanel>
+									<CustomPages:FilesControl />
+								</StackPanel>
+							</Border>
+						</PivotItem.Content>
+					</PivotItem>
+				</Pivot>
+			</Grid>
 		</Grid>
 	</Grid>
 </Page>

@@ -68,16 +68,15 @@ namespace SJCAM
 					// configuring the new page by passing required information as a navigation
 					// parameter
 					Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-					Object o = localSettings.Values["AlreadyBoot"];
+					Object o = localSettings.Values["CameraModel"];
 					if(o == null)
 					{
 						//First boot
-						localSettings.Values["AlreadyBoot"] = 1;
 						rootFrame.Navigate(typeof(Pages.CameraChoose), e.Arguments);
 					}
 					else
 					{
-						rootFrame.Navigate(typeof(Pages.CameraChoose), e.Arguments);
+						rootFrame.Navigate(typeof(Pages.ConnectionPage), e.Arguments);
 					}
                 }
                 // Ensure the current window is active

@@ -9,7 +9,7 @@
 	xmlns:CustomPages="using:SJCAM.Custom"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 			<Image x:Name="Background" Source="ms-appx:///Images/bg-colored.jpg" Stretch="UniformToFill" />
 			<Grid Name="MainGrid">
@@ -18,9 +18,9 @@
 					<RowDefinition Height="Auto" />
 					<RowDefinition />
 				</Grid.RowDefinitions>
-				
+
 				<TextBlock Grid.Row ="0" Text="{Binding Model}" Style="{StaticResource TitleTextBlock}"/>
-				<vlc:MediaElement Grid.Row="1" Name="StreamPlayer" AreTransportControlsEnabled="True" AutoPlay="False" Margin="10">
+				<vlc:MediaElement Grid.Row="1" x:Name="StreamPlayer" AreTransportControlsEnabled="True" AutoPlay="False" Margin="10">
 					<vlc:MediaElement.TransportControls>
 						<vlc:MediaTransportControls ControlPanelOpacity="0.8" AutoHide="True" CursorAutoHide="True"/>
 					</vlc:MediaElement.TransportControls>

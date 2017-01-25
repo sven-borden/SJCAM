@@ -19,7 +19,7 @@
     <PackageCertificateKeyFile>SJCAM_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>B00A6C32B3129B08CE17C4919115B0FF1AE2AC42</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <AppxBundle>Always</AppxBundle>
+    <AppxBundle>Never</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">

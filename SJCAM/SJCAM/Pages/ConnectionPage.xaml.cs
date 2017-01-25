@@ -133,7 +133,7 @@ namespace SJCAM.Pages
 		{
 			PopupPassword.Width = this.ActualWidth;
 			PopupPassword.VerticalOffset = 150;
-			WifiSpot wifi = mylist.SelectedItem as WifiSpot;
+			WifiSpot wifi = list.SelectedItem as WifiSpot;
 			if (wifi.PswNeeded == false)
 				Connect(wifi);
 			else
@@ -195,7 +195,7 @@ namespace SJCAM.Pages
 				return;
 			PopupPassword.IsOpen = false;
 			ValidateWifiButton.IsEnabled = false;
-			WifiSpot spot = (mylist.SelectedItem as WifiSpot);
+			WifiSpot spot = (list.SelectedItem as WifiSpot);
 			spot.Psw = password;
 			Connect(spot);
 		}

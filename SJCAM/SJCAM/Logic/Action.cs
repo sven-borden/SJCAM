@@ -47,7 +47,8 @@ namespace SJCAM.Logic
 			catch (Exception e)
 			{
 				Debug.WriteLine("[FILE REQUEST]: get error to get file");
-				return null;
+                e.ToString();
+                return null;
 			}
 		}
 
@@ -67,6 +68,7 @@ namespace SJCAM.Logic
 			catch (Exception e)
 			{
 				Debug.WriteLine("[REQUEST]: get error to get request");
+                e.ToString();
 				return null;
 			}
 		}

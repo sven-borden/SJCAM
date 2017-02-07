@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="glaglasven.SJCAM" Publisher="CN=A4CDA1AE-2891-435C-B73F-FCA7B39485F4" Version="1.3.18.0" />
-  <mp:PhoneIdentity PhoneProductId="c818269b-e0dc-4b56-84fb-24116891db98" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="62394glaglasven.SJCAM" Publisher="CN=A4CDA1AE-2891-435C-B73F-FCA7B39485F4" Version="1.8.12.0" />
+  <mp:PhoneIdentity PhoneProductId="4452bb88-1cca-490f-b2bd-e4513a8b0d1c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>SJCAM</DisplayName>
     <PublisherDisplayName>glaglasven</PublisherDisplayName>
@@ -17,11 +17,6 @@
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="SJCAM.App">
       <uap:VisualElements DisplayName="SJCAM" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="SJCAM" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
-          <uap:ShowNameOnTiles>
-            <uap:ShowOn Tile="square150x150Logo" />
-            <uap:ShowOn Tile="wide310x150Logo" />
-            <uap:ShowOn Tile="square310x310Logo" />
-          </uap:ShowNameOnTiles>
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
@@ -30,7 +25,6 @@
   <Capabilities>
     <Capability Name="internetClient" />
     <Capability Name="internetClientServer" />
-    <DeviceCapability Name="proximity" />
     <DeviceCapability Name="wifiControl" />
   </Capabilities>
 </Package>

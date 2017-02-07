@@ -6,8 +6,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -106,11 +108,19 @@ namespace SJCAM.Pages
 			StartupModel model = (sender as GridView).SelectedItem as StartupModel;
 			Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 			localSettings.Values["CameraModel"] = model.Description;
-			//			await (sender as GridView).Fade(0, 400, 0).Offset(0, 50, 400, 0).StartAsync();
+            if(model.Description != "M20")
+                await ShowExcept();
 			foreach (var item in MainStack.Children)
 				await item.Fade(0, 500, 0).StartAsync();
 			await Background.Blur(0, 200, 0).StartAsync();
-			Frame.Navigate(typeof(ConnectionPage));
+			Frame.Navigate(typeof(Connection));
 		}
-	}
+
+        private async Task<bool> ShowExcept()
+        {
+            MessageDialog d = new MessageDialog("Please notice that this camera is not fully supported right now. Some feature may not work", "Camera not fully supported");
+            await d.ShowAsync();
+            return true;
+        }
+    }
 }

@@ -76,7 +76,7 @@ namespace SJCAM
 					}
 					else
 					{
-						rootFrame.Navigate(typeof(Pages.ConnectionPage), e.Arguments);
+						rootFrame.Navigate(typeof(Pages.Connection), e.Arguments);
 					}
                 }
                 // Ensure the current window is active

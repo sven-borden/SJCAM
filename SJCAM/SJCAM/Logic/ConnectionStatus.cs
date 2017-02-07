@@ -16,7 +16,7 @@ namespace SJCAM.Logic
 {
 	static class ConnectionStatus
 	{
-		public static bool IsConnected { get; private set; }
+		public static bool IsConnected { get; set; }
 		public static Task WiFiConnectionKind { get; private set; }
 		/// <summary>
 		/// Get state of connection
@@ -98,6 +98,7 @@ namespace SJCAM.Logic
 			}
 			catch (Exception e)
 			{
+                e.ToString();
 				Debug.WriteLine("[Get WIFI List]: ERROR");
 			}
 

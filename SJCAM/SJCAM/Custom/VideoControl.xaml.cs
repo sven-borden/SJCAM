@@ -62,6 +62,7 @@ namespace SJCAM.Custom
 			}
 			catch (ArgumentException e)
 			{
+                e.ToString();
 			}
 		}
 

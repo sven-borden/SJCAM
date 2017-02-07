@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{D278E264-57D8-4178-861B-A6ABE4FC6344}</ProjectGuid>
+    <ProjectGuid>{CDB7C275-478E-4D30-BF94-21C0CF3491DD}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SJCAM</RootNamespace>
@@ -17,10 +17,10 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>SJCAM_StoreKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>B00A6C32B3129B08CE17C4919115B0FF1AE2AC42</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>E18C0D14D639A797298D032E24470F462136E25A</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <AppxBundle>Never</AppxBundle>
+    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -43,7 +43,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -99,38 +99,29 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Custom\FilesControl.xaml.cs">
-      <DependentUpon>FilesControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Custom\MultipleOptionControl.xaml.cs">
-      <DependentUpon>MultipleOptionControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Custom\PhotoControl.xaml.cs">
-      <DependentUpon>PhotoControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Custom\SettingsControl.xaml.cs">
-      <DependentUpon>SettingsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Custom\VideoControl.xaml.cs">
-      <DependentUpon>VideoControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Custom\FilesControl.xaml.cs" />
+    <Compile Include="Custom\MultipleOptionControl.xaml.cs" />
+    <Compile Include="Custom\PhotoControl.xaml.cs" />
+    <Compile Include="Custom\SettingsControl.xaml.cs" />
+    <Compile Include="Custom\VideoControl.xaml.cs" />
     <Compile Include="Logic\Action.cs" />
-    <Compile Include="Logic\Settings\CameraSettings.cs" />
     <Compile Include="Logic\ConnectionStatus.cs" />
+    <Compile Include="Logic\Settings\CameraSettings.cs" />
     <Compile Include="Logic\Settings\PhotoSettings.cs" />
     <Compile Include="Logic\Settings\VideoSettings.cs" />
     <Compile Include="Logic\StartupModel.cs" />
     <Compile Include="Logic\Wifi\StrenghToString.Converter.cs" />
     <Compile Include="Logic\Wifi\WifiSpot.cs" />
     <Compile Include="Logic\WrittingReading.cs" />
-    <Compile Include="Pages\CameraChoose.xaml.cs">
-      <DependentUpon>CameraChoose.xaml</DependentUpon>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConnectionPage.xaml.cs">
-      <DependentUpon>ConnectionPage.xaml</DependentUpon>
+    <Compile Include="Pages\CameraChoose.xaml.cs" />
+    <Compile Include="Pages\Connection.xaml.cs">
+      <DependentUpon>Connection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DevicePage.xaml.cs">
-      <DependentUpon>DevicePage.xaml</DependentUpon>
+    <Compile Include="Pages\Device.xaml.cs">
+      <DependentUpon>Device.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Style\AppColor.cs" />
@@ -184,7 +175,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="background.jpg" />
-    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Images\bg-colored.jpg" />
     <Content Include="Images\M10.png" />
     <Content Include="Images\M10Plus.png" />
@@ -195,6 +185,7 @@
     <Content Include="Images\SJ5000.png" />
     <Content Include="Images\SJ5000WIFI.png" />
     <Content Include="Images\SJ5000X.png" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -209,40 +200,44 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Custom\FilesControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Custom\MultipleOptionControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Custom\PhotoControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Custom\SettingsControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Custom\VideoControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\CameraChoose.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Connection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ConnectionPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\DevicePage.xaml">
+    <Page Include="Pages\Device.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Style\Style.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

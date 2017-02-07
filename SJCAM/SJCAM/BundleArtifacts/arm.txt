@@ -1,6 +1,0 @@
-MainPackage=C:\Users\glagl\Documents\GitHub\SJCAM\SJCAM\SJCAM\bin\ARM\Release\SJCAM_1.8.10.0_ARM.appx
-SymbolPackage=C:\Users\glagl\Documents\GitHub\SJCAM\SJCAM\SJCAM\AppPackages\SJCAM_1.8.10.0_Test\SJCAM_1.8.10.0_ARM.appxsym
-ResourcePack=C:\Users\glagl\Documents\GitHub\SJCAM\SJCAM\SJCAM\bin\ARM\Release\SJCAM_1.8.10.0_scale-100.appx
-ResourcePack=C:\Users\glagl\Documents\GitHub\SJCAM\SJCAM\SJCAM\bin\ARM\Release\SJCAM_1.8.10.0_scale-125.appx
-ResourcePack=C:\Users\glagl\Documents\GitHub\SJCAM\SJCAM\SJCAM\bin\ARM\Release\SJCAM_1.8.10.0_scale-150.appx
-ResourcePack=C:\Users\glagl\Documents\GitHub\SJCAM\SJCAM\SJCAM\bin\ARM\Release\SJCAM_1.8.10.0_scale-400.appx

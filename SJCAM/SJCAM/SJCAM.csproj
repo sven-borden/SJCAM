@@ -123,6 +123,11 @@
     <Compile Include="Pages\Device.xaml.cs">
       <DependentUpon>Device.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Parameters\M10.cs" />
+    <Compile Include="Parameters\M10Plus.cs" />
+    <Compile Include="Parameters\M10WIFI.cs" />
+    <Compile Include="Parameters\M20.cs" />
+    <Compile Include="Parameters\SJ5000x.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Style\AppColor.cs" />
   </ItemGroup>

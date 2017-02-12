@@ -25976,14 +25976,14 @@
     "UAP,Version=v10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\glagl\\.nuget\\packages\\": {}
+    "C:\\Users\\Sven Borden\\.nuget\\packages\\": {}
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\Users\\glagl\\Documents\\GitHub\\SJCAM\\SJCAM\\SJCAM\\SJCAM.csproj",
+      "projectUniqueName": "C:\\Users\\Sven Borden\\Documents\\GitHub\\SJCAM\\SJCAM\\SJCAM\\SJCAM.csproj",
       "projectName": "SJCAM",
-      "projectPath": "C:\\Users\\glagl\\Documents\\GitHub\\SJCAM\\SJCAM\\SJCAM\\SJCAM.csproj",
-      "projectJsonPath": "C:\\Users\\glagl\\Documents\\GitHub\\SJCAM\\SJCAM\\SJCAM\\project.json",
+      "projectPath": "C:\\Users\\Sven Borden\\Documents\\GitHub\\SJCAM\\SJCAM\\SJCAM\\SJCAM.csproj",
+      "projectJsonPath": "C:\\Users\\Sven Borden\\Documents\\GitHub\\SJCAM\\SJCAM\\SJCAM\\project.json",
       "projectStyle": "ProjectJson"
     },
     "dependencies": {
@@ -25991,7 +25991,7 @@
       "Microsoft.Toolkit.Uwp.UI": "1.2.0",
       "Microsoft.Toolkit.Uwp.UI.Animations": "1.2.0",
       "Microsoft.Toolkit.Uwp.UI.Controls": "1.2.0",
-      "VLC.MediaElement": "[0.9.8, )"
+      "VLC.MediaElement": "0.9.8"
     },
     "frameworks": {
       "uap10.0": {}
